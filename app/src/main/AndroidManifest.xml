@@ -21,7 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.LoginActivity"
             android:label="@string/title_activity_login"
@@ -30,9 +29,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dorren.eventhub.ui.MainActivity" />
         </activity>
-
-        <activity android:name=".ui.MainActivity">
-        </activity>
+        <activity android:name=".ui.MainActivity"></activity>
+        <activity android:name=".ui.SignupActivity"></activity>
     </application>
 
 </manifest>
