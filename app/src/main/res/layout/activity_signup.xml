@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="com.dorren.eventhub.ui.SignupActivity">
+    tools:context="com.dorren.eventhub.user.SignupActivity">
 
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="wrap_content"

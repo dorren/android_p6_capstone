@@ -1,4 +1,4 @@
-package com.dorren.eventhub.ui;
+package com.dorren.eventhub.user;
 
 import android.content.Intent;
 import android.support.v4.util.Pair;
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.dorren.eventhub.R;
+import com.dorren.eventhub.ui.MainActivity;
 
 public class SignupActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.dorren.eventhub.ui;
+package com.dorren.eventhub.user;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,9 +32,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.dorren.eventhub.R;
+import com.dorren.eventhub.data.User;
+import com.dorren.eventhub.util.NetworkUtil;
 
+import org.json.JSONObject;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -57,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    private AuthenticateTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -199,8 +213,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            //mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new AuthenticateTask();
+            mAuthTask.execute(email, password);
         }
     }
 
@@ -363,6 +378,102 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+    }
+
+    public class AuthenticateTask extends AsyncTask<String, Void, User>{
+        private String mErrorMsg;
+
+        public AuthenticateTask(){}
+
+        @Override
+        protected User doInBackground(String... params) {
+            String email = params[0];
+            String password = params[1];
+
+            try {
+                String response = authenticate(email, password);
+                Log.d("authenticateTask", response);
+                JSONObject json = new JSONObject(response);
+
+                if(json.has("error")){
+                    mErrorMsg = json.getString("error");
+                }else{
+                    User user = User.fromJson(response);
+                    return user;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                mErrorMsg = e.getMessage();
+                return null;
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
+            mAuthTask = null;
+            showProgress(false);
+
+            if (user != null) {
+                finish();
+            } else {
+                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.requestFocus();
+            }
+        }
+
+        private String authenticate(String email, String password) {
+            URL url = null;
+            Uri uri = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().
+                    appendPath("users").appendPath("authenticate").build();
+            try {
+                url = new URL(uri.toString());
+            }catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000);
+                conn.setConnectTimeout(15000);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                Uri.Builder builder = new Uri.Builder()
+                        .appendQueryParameter("email", email)
+                        .appendQueryParameter("password", password);
+                String query = builder.build().getEncodedQuery();
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+
+                conn.connect();
+
+
+                InputStream in = conn.getInputStream();
+
+                Scanner scanner = new Scanner(in);
+                scanner.useDelimiter("\\A");
+
+                boolean hasInput = scanner.hasNext();
+                if (hasInput) {
+                    return scanner.next();
+                } else {
+                    return null;
+                }
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "{}";
         }
     }
 }

@@ -2,14 +2,13 @@ package com.dorren.eventhub.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.User;
+import com.dorren.eventhub.user.LoginActivity;
 import com.dorren.eventhub.util.PreferenceUtil;
 
 public class SplashActivity extends AppCompatActivity {
