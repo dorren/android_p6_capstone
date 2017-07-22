@@ -33,6 +33,7 @@ public class PreferenceUtil {
         SharedPreferences.Editor editor = prefs.edit();
         String key_name = context.getString(R.string.current_user_json);
         editor.putString(key_name, json);
+        editor.commit();
     }
 
     public static User getCurrentUser(Context context) {

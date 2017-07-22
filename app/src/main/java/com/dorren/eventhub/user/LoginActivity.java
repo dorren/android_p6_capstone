@@ -3,6 +3,7 @@ package com.dorren.eventhub.user;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -34,6 +35,7 @@ import android.widget.TextView;
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.User;
 import com.dorren.eventhub.util.NetworkUtil;
+import com.dorren.eventhub.util.PreferenceUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,6 +58,9 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+    public static final int LOGIN_REQUEST_CODE = 1;
+    public static final int LOGIN_SUCCESS = 1;
+    public static final int LOGIN_FAIL    = 2;
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -215,7 +220,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
             //mAuthTask = new UserLoginTask(email, password);
-            mAuthTask = new AuthenticateTask();
+            mAuthTask = new AuthenticateTask(this);
             mAuthTask.execute(email, password);
         }
     }
@@ -383,9 +388,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     public class AuthenticateTask extends AsyncTask<String, Void, User>{
+        private Context mContext;
         private String mErrorMsg;
 
-        public AuthenticateTask(){}
+
+        public AuthenticateTask(Context context){
+            mContext = context;
+        }
 
         @Override
         protected User doInBackground(String... params) {
@@ -408,6 +417,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (user != null) {
+                PreferenceUtil.saveCurrentUser(mContext, user);
+                setResult(LOGIN_SUCCESS);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

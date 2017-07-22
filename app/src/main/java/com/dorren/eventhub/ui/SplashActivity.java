@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.User;
@@ -13,6 +14,7 @@ import com.dorren.eventhub.util.PreferenceUtil;
 
 public class SplashActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +22,16 @@ public class SplashActivity extends AppCompatActivity {
 
 
         new AuthenticateAsyncTask(this).execute();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == LoginActivity.LOGIN_REQUEST_CODE){
+            if(resultCode == LoginActivity.LOGIN_SUCCESS){
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+        }
     }
 
     /**
@@ -44,7 +56,7 @@ public class SplashActivity extends AppCompatActivity {
         protected void onPostExecute(User user) {
             if(user == null){
                 Intent intent = new Intent(mContext, LoginActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, LoginActivity.LOGIN_REQUEST_CODE);
             }else{
                 Intent intent = new Intent(mContext, MainActivity.class);
                 startActivity(intent);

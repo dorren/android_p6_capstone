@@ -57,7 +57,7 @@ public class NetworkUtil {
      *
      *     query(url)
      *     query(url, "POST")
-     *     query(url, "POST", bodyParams)   // bodyParams is JSONObject
+     *     query(url, "POST", bodyParams)   // bodyParams in JSONObject format
      *
      * @param url request url
      * @param settings additional request parameters
@@ -68,7 +68,6 @@ public class NetworkUtil {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         try {
-
             conn.setReadTimeout(10000);
             conn.setConnectTimeout(15000);
 
