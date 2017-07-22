@@ -35,6 +35,7 @@ import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.User;
 import com.dorren.eventhub.util.NetworkUtil;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedWriter;
@@ -392,21 +393,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String password = params[1];
 
             try {
-                String response = authenticate(email, password);
-                Log.d("authenticateTask", response);
-                JSONObject json = new JSONObject(response);
-
-                if(json.has("error")){
-                    mErrorMsg = json.getString("error");
-                }else{
-                    User user = User.fromJson(response);
-                    return user;
-                }
-
+                User user = authenticate(email, password);
+                return user;
             } catch (Exception e) {
                 e.printStackTrace();
-                mErrorMsg = e.getMessage();
-                return null;
             }
 
             return null;
@@ -425,55 +415,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         }
 
-        private String authenticate(String email, String password) {
-            URL url = null;
+        private User authenticate(String email, String password)
+                throws IOException, JSONException {
+
             Uri uri = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().
                     appendPath("users").appendPath("authenticate").build();
-            try {
-                url = new URL(uri.toString());
-            }catch (MalformedURLException e) {
-                e.printStackTrace();
+            URL url = new URL(uri.toString());
+
+            JSONObject data = new JSONObject();
+            data.put("email", email);
+            data.put("password", password);
+
+            String response = NetworkUtil.query(url, "POST", data);
+            JSONObject json = new JSONObject(response);
+
+            if(json.has("error")){
+                mErrorMsg = json.getString("error");
+            }else{
+                User user = User.fromJson(response);
+                return user;
             }
 
-            try {
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(10000);
-                conn.setConnectTimeout(15000);
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("email", email)
-                        .appendQueryParameter("password", password);
-                String query = builder.build().getEncodedQuery();
-
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(query);
-                writer.flush();
-                writer.close();
-                os.close();
-
-                conn.connect();
-
-
-                InputStream in = conn.getInputStream();
-
-                Scanner scanner = new Scanner(in);
-                scanner.useDelimiter("\\A");
-
-                boolean hasInput = scanner.hasNext();
-                if (hasInput) {
-                    return scanner.next();
-                } else {
-                    return null;
-                }
-            }catch (IOException e) {
-                e.printStackTrace();
-            }
-            return "{}";
+            return null;
         }
     }
 }

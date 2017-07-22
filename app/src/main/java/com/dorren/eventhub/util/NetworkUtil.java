@@ -2,6 +2,9 @@ package com.dorren.eventhub.util;
 
 import android.net.Uri;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +13,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -45,58 +51,88 @@ public class NetworkUtil {
         }
     }
 
+
     /**
-     * build user authentication url.
+     * send http request, returns response string. For example.
      *
+     *     query(url)
+     *     query(url, "POST")
+     *     query(url, "POST", bodyParams)   // bodyParams is JSONObject
+     *
+     * @param url request url
+     * @param settings additional request parameters
+     * @return response string
      */
-    public static URL buildAuthenticateURL(){
-        Uri uri = Uri.parse(API_BASE_URL).buildUpon().
-                appendPath("users").appendPath("authenticate").build();
+    public static String query(URL url, Object... settings) throws IOException{
+        String response = null;
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         try {
-            URL url = new URL(uri.toString());
-            return url;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
-    public static void authenticate(String email, String password) {
-        URL url = null;
-        Uri uri = Uri.parse(API_BASE_URL).buildUpon().
-                appendPath("users").appendPath("authenticate").build();
-        try {
-            url = new URL(uri.toString());
-        }catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(10000);
             conn.setConnectTimeout(15000);
-            conn.setRequestMethod("POST");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
 
-            Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("email", email)
-                    .appendQueryParameter("password", password);
-            String query = builder.build().getEncodedQuery();
+            if(settings.length > 0){
+                String method = (String) settings[0];
+                conn.setRequestMethod(method);
+                //conn.setDoInput(true);
+                if(method == "POST" || method == "PUT") {
+                    conn.setDoOutput(true);
+                }
+            }
 
-            OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            writer.write(query);
-            writer.flush();
-            writer.close();
-            os.close();
+            if(settings.length > 1){
+                JSONObject data = (JSONObject) settings[1];
+                buildBodyParameters(conn, data);
+            }
 
             conn.connect();
-        }catch (IOException e) {
+
+            InputStream in = conn.getInputStream();
+            Scanner scanner = new Scanner(in);
+            scanner.useDelimiter("\\A");
+
+            boolean hasInput = scanner.hasNext();
+            if (hasInput) {
+                response = scanner.next();
+            }
+        }catch (Exception e) {
             e.printStackTrace();
+            response = buildErrorResponse(e).toString();
+        }finally {
+            conn.disconnect();
         }
+        return response;
     }
 
+    private static JSONObject buildErrorResponse(Exception ex){
+        JSONObject json = new JSONObject();
+        try {
+            json.put("error", ex.getMessage());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
+    private static void buildBodyParameters(URLConnection conn, JSONObject data)
+            throws JSONException, IOException{
+        Uri.Builder builder = new Uri.Builder();
+
+        Iterator keys = data.keys();
+        while(keys.hasNext()){
+            String key = (String) keys.next();
+            String val = data.getString(key);
+            builder.appendQueryParameter(key, val);
+        }
+        String reqBody = builder.build().getEncodedQuery();
+
+        OutputStream os = conn.getOutputStream();
+        BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(os, "UTF-8"));
+        writer.write(reqBody);
+        writer.flush();
+        writer.close();
+        os.close();
+    }
 }
