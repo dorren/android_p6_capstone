@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.User;
 import com.dorren.eventhub.user.LoginActivity;
+import com.dorren.eventhub.util.AppUtil;
 import com.dorren.eventhub.util.PreferenceUtil;
 
 public class SplashActivity extends AppCompatActivity {
@@ -25,9 +28,30 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        if(itemId == R.id.menu_logout){
+            PreferenceUtil.logout(this);
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivityForResult(intent, AppUtil.LOGIN_REQUEST);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == LoginActivity.LOGIN_REQUEST_CODE){
-            if(resultCode == LoginActivity.LOGIN_SUCCESS){
+        if(requestCode == AppUtil.LOGIN_REQUEST){
+            if(resultCode == AppUtil.LOGIN_SUCCESS){
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }
@@ -56,7 +80,7 @@ public class SplashActivity extends AppCompatActivity {
         protected void onPostExecute(User user) {
             if(user == null){
                 Intent intent = new Intent(mContext, LoginActivity.class);
-                startActivityForResult(intent, LoginActivity.LOGIN_REQUEST_CODE);
+                startActivityForResult(intent, AppUtil.LOGIN_REQUEST);
             }else{
                 Intent intent = new Intent(mContext, MainActivity.class);
                 startActivity(intent);

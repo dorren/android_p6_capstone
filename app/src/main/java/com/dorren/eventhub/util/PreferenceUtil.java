@@ -27,7 +27,7 @@ public class PreferenceUtil {
     }
 
     public static void saveCurrentUser(Context context, User user){
-        String json = user.toJson();
+        String json = (user == null) ? null : user.toJson();
 
         SharedPreferences prefs = getPreference(context);
         SharedPreferences.Editor editor = prefs.edit();
@@ -47,6 +47,10 @@ public class PreferenceUtil {
         }
 
         return user;
+    }
+
+    public static void logout(Context context) {
+        saveCurrentUser(context, null);
     }
 
 }

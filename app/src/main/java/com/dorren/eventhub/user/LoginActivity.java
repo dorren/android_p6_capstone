@@ -34,6 +34,8 @@ import android.widget.TextView;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.User;
+import com.dorren.eventhub.ui.MainActivity;
+import com.dorren.eventhub.util.AppUtil;
 import com.dorren.eventhub.util.NetworkUtil;
 import com.dorren.eventhub.util.PreferenceUtil;
 
@@ -58,10 +60,6 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-    public static final int LOGIN_REQUEST_CODE = 1;
-    public static final int LOGIN_SUCCESS = 1;
-    public static final int LOGIN_FAIL    = 2;
-
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -302,7 +300,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     public void gotoSignup(View view){
         Intent intent = new Intent(this, SignupActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, AppUtil.SIGNUP_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == AppUtil.SIGNUP_REQUEST){
+            if(resultCode == AppUtil.SIGNUP_SUCCESS){
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
     }
 
     @Override
@@ -418,7 +427,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (user != null) {
                 PreferenceUtil.saveCurrentUser(mContext, user);
-                setResult(LOGIN_SUCCESS);
+                setResult(AppUtil.LOGIN_SUCCESS);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -440,8 +449,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String response = NetworkUtil.query(url, "POST", data);
             JSONObject json = new JSONObject(response);
 
-            if(json.has("error")){
-                mErrorMsg = json.getString("error");
+            if(json.has(AppUtil.errKey)){
+                mErrorMsg = json.getString(AppUtil.errKey);
             }else{
                 User user = User.fromJson(response);
                 return user;
@@ -451,4 +460,3 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 }
-
