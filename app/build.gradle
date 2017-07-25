@@ -18,7 +18,7 @@ android {
         }
     }
     testOptions {
-        unitTests.returnDefaultValues = true
+        //unitTests.returnDefaultValues = true
     }
 }
 
@@ -35,4 +35,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     testCompile 'junit:junit:4.12'
     testCompile 'org.json:json:20170516'  // override mocked android sdk.
+    //testCompile 'org.mockito:mockito-core:2.8.47'
 }

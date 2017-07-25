@@ -1,11 +1,9 @@
 package com.dorren.eventhub.data;
-import android.provider.Settings;
-import android.util.Log;
+
+import com.dorren.eventhub.model.User;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Test;
-import org.threeten.bp.OffsetDateTime;
 
 
 import static org.junit.Assert.*;

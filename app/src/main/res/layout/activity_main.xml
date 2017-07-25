@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dorren.eventhub.ui.MainActivity">
+    tools:context="com.dorren.eventhub.ui.event.MainActivity">
 
     <fragment
         android:id="@+id/recipes_list_fragment"
-        android:name="com.dorren.eventhub.event.EventListFragment"
+        android:name="com.dorren.eventhub.ui.event.EventListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

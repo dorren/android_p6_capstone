@@ -1,18 +1,15 @@
-package com.dorren.eventhub.user;
+package com.dorren.eventhub.ui.user;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
 import com.dorren.eventhub.R;
-import com.dorren.eventhub.data.User;
-import com.dorren.eventhub.ui.MainActivity;
+import com.dorren.eventhub.model.User;
 import com.dorren.eventhub.util.AppUtil;
 import com.dorren.eventhub.util.NetworkUtil;
 import com.dorren.eventhub.util.PreferenceUtil;

@@ -25,15 +25,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".user.LoginActivity"
+            android:name=".ui.user.LoginActivity"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".ui.MainActivity">
+            android:parentActivityName=".ui.event.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.dorren.eventhub.ui.MainActivity" />
+                android:value="com.dorren.eventhub.ui.event.MainActivity" />
         </activity>
-        <activity android:name=".ui.MainActivity"></activity>
-        <activity android:name=".user.SignupActivity"></activity>
+        <activity android:name=".ui.event.MainActivity"></activity>
+        <activity android:name=".ui.user.SignupActivity"></activity>
     </application>
 
 </manifest>

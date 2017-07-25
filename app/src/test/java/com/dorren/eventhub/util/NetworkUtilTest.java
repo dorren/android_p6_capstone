@@ -25,7 +25,6 @@ public class NetworkUtilTest {
         URL url = new URL(weatherUrl);
 
         String response = NetworkUtil.query(url);
-        //System.out.println(response);
         assertNotNull(response);
     }
 

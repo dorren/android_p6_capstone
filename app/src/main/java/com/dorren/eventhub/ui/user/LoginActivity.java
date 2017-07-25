@@ -1,4 +1,4 @@
-package com.dorren.eventhub.user;
+package com.dorren.eventhub.ui.user;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -21,7 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,8 +32,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.dorren.eventhub.R;
-import com.dorren.eventhub.data.User;
-import com.dorren.eventhub.ui.MainActivity;
+import com.dorren.eventhub.data.ApiService;
+import com.dorren.eventhub.model.User;
+import com.dorren.eventhub.ui.event.MainActivity;
 import com.dorren.eventhub.util.AppUtil;
 import com.dorren.eventhub.util.NetworkUtil;
 import com.dorren.eventhub.util.PreferenceUtil;
@@ -42,17 +42,10 @@ import com.dorren.eventhub.util.PreferenceUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -399,10 +392,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public class AuthenticateTask extends AsyncTask<String, Void, User>{
         private Context mContext;
         private String mErrorMsg;
+        private ApiService api;
 
 
         public AuthenticateTask(Context context){
             mContext = context;
+            api  = new ApiService();
         }
 
         @Override
@@ -410,14 +405,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String email = params[0];
             String password = params[1];
 
+            User user = null;
             try {
-                User user = authenticate(email, password);
-                return user;
+                user = api.authenticate(email, password);
             } catch (Exception e) {
                 e.printStackTrace();
+                mErrorMsg = e.getMessage();
             }
-
-            return null;
+            return user;
         }
 
         @Override
@@ -435,28 +430,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         }
 
-        private User authenticate(String email, String password)
-                throws IOException, JSONException {
 
-            Uri uri = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().
-                    appendPath("users").appendPath("authenticate").build();
-            URL url = new URL(uri.toString());
-
-            JSONObject data = new JSONObject();
-            data.put("email", email);
-            data.put("password", password);
-
-            String response = NetworkUtil.query(url, "POST", data);
-            JSONObject json = new JSONObject(response);
-
-            if(json.has(AppUtil.errKey)){
-                mErrorMsg = json.getString(AppUtil.errKey);
-            }else{
-                User user = User.fromJson(response);
-                return user;
-            }
-
-            return null;
-        }
     }
 }

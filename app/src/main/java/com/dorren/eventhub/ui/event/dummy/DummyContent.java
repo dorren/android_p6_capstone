@@ -1,6 +1,6 @@
-package com.dorren.eventhub.event.dummy;
+package com.dorren.eventhub.ui.event.dummy;
 
-import com.dorren.eventhub.data.Event;
+import com.dorren.eventhub.model.Event;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -10,8 +10,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.dorren.eventhub.R;
-import com.dorren.eventhub.data.User;
-import com.dorren.eventhub.user.LoginActivity;
+import com.dorren.eventhub.model.User;
+import com.dorren.eventhub.ui.event.MainActivity;
+import com.dorren.eventhub.ui.user.LoginActivity;
 import com.dorren.eventhub.util.AppUtil;
 import com.dorren.eventhub.util.PreferenceUtil;
 

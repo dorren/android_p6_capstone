@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.dorren.eventhub.R;
-import com.dorren.eventhub.data.User;
+import com.dorren.eventhub.model.User;
 
 /**
  * Created by dorrenchen on 7/19/17.

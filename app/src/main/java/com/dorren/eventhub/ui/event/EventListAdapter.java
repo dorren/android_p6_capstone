@@ -1,4 +1,4 @@
-package com.dorren.eventhub.event;
+package com.dorren.eventhub.ui.event;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dorren.eventhub.R;
-import com.dorren.eventhub.data.Event;
-import com.dorren.eventhub.event.EventListFragment.EventListListener;
-import com.dorren.eventhub.event.dummy.DummyContent.DummyItem;
+import com.dorren.eventhub.model.Event;
+import com.dorren.eventhub.ui.event.EventListFragment.EventListListener;
+import com.dorren.eventhub.ui.event.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 

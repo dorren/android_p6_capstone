@@ -1,4 +1,4 @@
-package com.dorren.eventhub.event;
+package com.dorren.eventhub.ui.event;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,9 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dorren.eventhub.R;
-import com.dorren.eventhub.data.Event;
-import com.dorren.eventhub.event.dummy.DummyContent;
-import com.dorren.eventhub.event.dummy.DummyContent.DummyItem;
+import com.dorren.eventhub.model.Event;
+import com.dorren.eventhub.ui.event.dummy.DummyContent;
 
 /**
  * A fragment representing a list of Items.
