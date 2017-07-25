@@ -4,9 +4,11 @@ import android.net.Uri;
 
 import com.dorren.eventhub.model.Event;
 import com.dorren.eventhub.util.NetworkUtil;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.threeten.bp.OffsetDateTime;
 
 
 import static org.junit.Assert.*;
@@ -29,6 +31,10 @@ public class ApiServiceTest {
         try {
             Event[] events = api.getEvents();
             assertNotNull(events);
+            assertTrue(events.length > 0);
+
+            Event event = events[0];
+            assertNotNull(event.timeFrom);
         }catch (ApiException ex){
             ex.printStackTrace();
         }

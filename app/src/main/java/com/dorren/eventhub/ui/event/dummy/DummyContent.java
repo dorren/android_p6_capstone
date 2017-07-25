@@ -2,6 +2,8 @@ package com.dorren.eventhub.ui.event.dummy;
 
 import com.dorren.eventhub.model.Event;
 
+import org.threeten.bp.OffsetDateTime;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +42,11 @@ public class DummyContent {
     }
 
     private static Event createEvent(int position) {
-        return new Event(String.valueOf(position), "Item " + position, makeDetails(position));
+        return new Event(
+                String.valueOf(position),
+                "Item " + position, makeDetails(position),
+                OffsetDateTime.now().toString(),
+                OffsetDateTime.now().toString());
     }
 
     private static String makeDetails(int position) {

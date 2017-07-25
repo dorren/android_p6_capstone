@@ -62,7 +62,7 @@ public class ApiService {
         try {
             //Uri uri = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().appendPath("events").build();
             //URL url = new URL(uri.toString());
-            String url_str = NetworkUtil.API_BASE_URL + "/events";
+            String url_str = NetworkUtil.API_BASE_URL + "/events"; // unit test mocked Uri.parse.
             URL url = new URL(url_str);
 
             String response = NetworkUtil.query(url);
