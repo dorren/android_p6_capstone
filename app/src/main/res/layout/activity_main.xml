@@ -7,7 +7,7 @@
     tools:context="com.dorren.eventhub.ui.event.MainActivity">
 
     <fragment
-        android:id="@+id/recipes_list_fragment"
+        android:id="@+id/main_event_list_fragment"
         android:name="com.dorren.eventhub.ui.event.EventListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

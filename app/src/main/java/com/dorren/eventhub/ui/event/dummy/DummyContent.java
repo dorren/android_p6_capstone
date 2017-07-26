@@ -45,8 +45,8 @@ public class DummyContent {
         return new Event(
                 String.valueOf(position),
                 "Item " + position, makeDetails(position),
-                OffsetDateTime.now().toString(),
-                OffsetDateTime.now().toString());
+                "2017-12-31T07:00:00.0000-05:00",
+                "2017-12-31T16:00:00.0000-05:00");
     }
 
     private static String makeDetails(int position) {

@@ -1,5 +1,6 @@
 package com.dorren.eventhub.ui.event;
 
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +15,13 @@ import com.dorren.eventhub.ui.event.dummy.DummyContent.DummyItem;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Event} and makes a call to the
  * specified {@link EventListListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
 
     private final List<Event> mValues;
+    private Cursor mCursor;
     private final EventListListener mListener;
 
     public EventListAdapter(List<Event> items, EventListListener listener) {
@@ -56,6 +57,18 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+
+    public void swapCursor(Cursor newCursor) {
+        if (mCursor != null) {
+            mCursor.close();
+        }
+        mCursor = newCursor;
+        if (mCursor != null) {
+            // Force the RecyclerView to refresh
+            this.notifyDataSetChanged();
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

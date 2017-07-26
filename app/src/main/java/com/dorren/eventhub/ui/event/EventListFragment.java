@@ -27,6 +27,7 @@ public class EventListFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private EventListListener mListener;
+    private EventListAdapter mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -102,7 +103,6 @@ public class EventListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface EventListListener {
-        // TODO: Update argument type and name
         void onBookmark(Event event);
         void onConfirm(Event event);
     }

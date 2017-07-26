@@ -30,7 +30,10 @@ public class EventContentProvider extends ContentProvider {
 
     public static final int CODE_EVENTS = 100;
     public static final String PATH_EVENTS = "events";
-    public static final Uri EVENT_URI =  BASE_CONTENT_URI.buildUpon().appendPath(PATH_EVENTS).build();
+    //public static final Uri EVENT_URI =  BASE_CONTENT_URI.buildUpon().appendPath(PATH_EVENTS).build();
+    public static final Uri EVENT_URI =  Uri.withAppendedPath(BASE_CONTENT_URI, PATH_EVENTS);
+
+
     private ApiService api;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();

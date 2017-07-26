@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +35,12 @@
         </activity>
         <activity android:name=".ui.event.MainActivity"></activity>
         <activity android:name=".ui.user.SignupActivity"></activity>
+
+        <provider
+            android:name=".data.EventContentProvider"
+            android:authorities="com.dorren.eventhub"
+            android:enabled="true"
+            android:exported="true"></provider>
     </application>
 
 </manifest>
