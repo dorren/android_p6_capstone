@@ -1,6 +1,7 @@
 package com.dorren.eventhub.ui.event;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,16 +18,12 @@ import com.dorren.eventhub.ui.event.dummy.DummyContent;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link EventListListener}
+ * Activities containing this fragment MUST implement the {@link EventListFragmentListener}
  * interface.
  */
-public class EventListFragment extends Fragment {
-
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    private EventListListener mListener;
+public class EventListFragment extends Fragment implements EventListAdapter.EventListAdapterListener {
+    private EventListFragmentListener mListener;
+    private RecyclerView mRecyclerView;
     private EventListAdapter mAdapter;
 
     /**
@@ -36,53 +33,38 @@ public class EventListFragment extends Fragment {
     public EventListFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static EventListFragment newInstance(int columnCount) {
-        EventListFragment fragment = new EventListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_event_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_event_list, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new EventListAdapter(DummyContent.ITEMS, mListener));
-        }
-        return view;
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.event_list_recycle_view);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+
+        mAdapter = new EventListAdapter(null, this);
+        mRecyclerView.setAdapter(mAdapter);
+
+        return rootView;
     }
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof EventListListener) {
-            mListener = (EventListListener) context;
+        if (context instanceof EventListFragmentListener) {
+            mListener = (EventListFragmentListener) context;
         } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnListFragmentInteractionListener");
+            throw new RuntimeException(context.toString()
+                    + " must implement OnListFragmentInteractionListener");
         }
     }
 
@@ -92,6 +74,14 @@ public class EventListFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(Event event) {
+        mListener.onClick(event);
+    }
+
+    public void swapCursor(Cursor cursor){
+        mAdapter.swapCursor(cursor);
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -102,8 +92,7 @@ public class EventListFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface EventListListener {
-        void onBookmark(Event event);
-        void onConfirm(Event event);
+    public interface EventListFragmentListener {
+        void onClick(Event event);
     }
 }

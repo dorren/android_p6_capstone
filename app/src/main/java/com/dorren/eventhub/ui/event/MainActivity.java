@@ -21,6 +21,7 @@ import com.dorren.eventhub.util.AppUtil;
 import com.dorren.eventhub.util.PreferenceUtil;
 
 public class MainActivity extends AppCompatActivity implements
+        EventListFragment.EventListFragmentListener,
         LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "MainActivity";
     private EventListFragment mEventListFragment;
@@ -66,8 +67,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-
-        Event[] events = cursorToEvents(cursor);
+        mEventListFragment.swapCursor(cursor);
     }
 
     @Override
@@ -75,10 +75,8 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-    private Event[] cursorToEvents(Cursor cursor){
-        int count = cursor.getCount();
-        Log.d(TAG, "cursor loader finish " + count);
-
-        return null;
+    @Override
+    public void onClick(Event event) {
+        Log.d(TAG, "clicked event " + event.title);
     }
 }

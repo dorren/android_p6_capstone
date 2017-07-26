@@ -9,23 +9,17 @@ import android.widget.TextView;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.model.Event;
-import com.dorren.eventhub.ui.event.EventListFragment.EventListListener;
-import com.dorren.eventhub.ui.event.dummy.DummyContent.DummyItem;
-
-import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Event} and makes a call to the
- * specified {@link EventListListener}.
+ * specified {@link EventListAdapterListener}.
  */
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
-
-    private final List<Event> mValues;
     private Cursor mCursor;
-    private final EventListListener mListener;
+    private final EventListAdapterListener mListener;
 
-    public EventListAdapter(List<Event> items, EventListListener listener) {
-        mValues = items;
+    public EventListAdapter(Cursor cursor, EventListAdapterListener listener) {
+        mCursor = cursor;
         mListener = listener;
     }
 
@@ -38,17 +32,25 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).title);
+        mCursor.moveToPosition(position);
+
+        String id = mCursor.getString(mCursor.getColumnIndex(Event.COL_ID));
+        String title = mCursor.getString(mCursor.getColumnIndex(Event.COL_TITLE));
+        String detail = mCursor.getString(mCursor.getColumnIndex(Event.COL_DETAIL));
+        String timeFrom = mCursor.getString(mCursor.getColumnIndex(Event.COL_TIME_FROM));
+        String timeTo = mCursor.getString(mCursor.getColumnIndex(Event.COL_TIME_TO));
+
+        Event event = new Event(id, title, detail, timeFrom, timeTo);
+        holder.mEvent = event;
+
+        holder.mIdView.setText(id);
+        holder.mContentView.setText(title);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onBookmark(holder.mItem);
+                    mListener.onClick(holder.mEvent);
                 }
             }
         });
@@ -56,9 +58,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        if(mCursor != null) {
+            return mCursor.getCount();
+        }else{
+            return 0;
+        }
     }
-
 
     public void swapCursor(Cursor newCursor) {
         if (mCursor != null) {
@@ -75,7 +80,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Event mItem;
+        public Event mEvent;
 
         public ViewHolder(View view) {
             super(view);
@@ -88,5 +93,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
         }
+    }
+
+    public interface EventListAdapterListener {
+        void onClick(Event event);
     }
 }
