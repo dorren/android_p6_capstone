@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.threeten.bp.OffsetDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
 /**
  * Created by dorrenchen on 7/18/17.
@@ -53,6 +54,11 @@ public class Event {
         }
 
         return event;
+    }
+
+    public String dateStr(){
+        String str = timeFrom.format(DateTimeFormatter.ofPattern("EEE MM/dd"));
+        return str;
     }
 
     public String toString() {

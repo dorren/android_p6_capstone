@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dorren.eventhub">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -17,7 +16,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,14 +31,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dorren.eventhub.ui.event.MainActivity" />
         </activity>
-        <activity android:name=".ui.event.MainActivity"></activity>
-        <activity android:name=".ui.user.SignupActivity"></activity>
+        <activity android:name=".ui.event.MainActivity" />
+        <activity android:name=".ui.user.SignupActivity" />
 
         <provider
             android:name=".data.EventContentProvider"
             android:authorities="com.dorren.eventhub"
             android:enabled="true"
-            android:exported="true"></provider>
+            android:exported="true" />
+
+        <activity android:name=".ui.event.EventDetailActivity"></activity>
     </application>
 
 </manifest>

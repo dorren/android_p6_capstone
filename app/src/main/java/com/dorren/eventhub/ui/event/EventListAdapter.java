@@ -50,7 +50,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.mEvent = event;
 
         Picasso.with(mContext).load(imageUrl).into(holder.mImageView);
-        holder.mContentView.setText(title);
+        holder.mDateView.setText(event.dateStr());
+        holder.mTitleView.setText(title);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,19 +86,21 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final ImageView mImageView;
-        public final TextView mContentView;
+        public final TextView mDateView;
+        public final TextView mTitleView;
         public Event mEvent;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mImageView = (ImageView) view.findViewById(R.id.event_image);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mDateView = (TextView) view.findViewById(R.id.event_date);
+            mTitleView = (TextView) view.findViewById(R.id.event_title);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mTitleView.getText() + "'";
         }
     }
 
