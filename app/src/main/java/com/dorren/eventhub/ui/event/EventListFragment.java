@@ -1,10 +1,9 @@
 package com.dorren.eventhub.ui.event;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.model.Event;
-import com.dorren.eventhub.ui.event.dummy.DummyContent;
 
 /**
  * A fragment representing a list of Items.

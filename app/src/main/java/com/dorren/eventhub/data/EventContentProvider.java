@@ -125,7 +125,8 @@ public class EventContentProvider extends ContentProvider {
                 Event.COL_TITLE,
                 Event.COL_DETAIL,
                 Event.COL_TIME_FROM,
-                Event.COL_TIME_TO};
+                Event.COL_TIME_TO,
+                Event.COL_IMAGE_URL};
         MatrixCursor cursor = new MatrixCursor(columns);
 
         for(Event event : events){
@@ -134,7 +135,8 @@ public class EventContentProvider extends ContentProvider {
                 add(Event.COL_TITLE, event.title).
                 add(Event.COL_DETAIL, event.detail).
                 add(Event.COL_TIME_FROM, event.timeFrom).
-                add(Event.COL_TIME_TO, event.timeTo);
+                add(Event.COL_TIME_TO, event.timeTo).
+                add(Event.COL_IMAGE_URL, event.imageUrl);
         }
 
         return cursor;

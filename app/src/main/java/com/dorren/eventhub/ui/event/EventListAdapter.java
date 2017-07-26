@@ -1,14 +1,17 @@
 package com.dorren.eventhub.ui.event;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.model.Event;
+import com.squareup.picasso.Picasso;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Event} and makes a call to the
@@ -17,6 +20,7 @@ import com.dorren.eventhub.model.Event;
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
     private Cursor mCursor;
     private final EventListAdapterListener mListener;
+    private Context mContext;
 
     public EventListAdapter(Cursor cursor, EventListAdapterListener listener) {
         mCursor = cursor;
@@ -25,6 +29,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_event, parent, false);
         return new ViewHolder(view);
@@ -39,11 +44,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         String detail = mCursor.getString(mCursor.getColumnIndex(Event.COL_DETAIL));
         String timeFrom = mCursor.getString(mCursor.getColumnIndex(Event.COL_TIME_FROM));
         String timeTo = mCursor.getString(mCursor.getColumnIndex(Event.COL_TIME_TO));
+        String imageUrl = mCursor.getString(mCursor.getColumnIndex(Event.COL_IMAGE_URL));
 
-        Event event = new Event(id, title, detail, timeFrom, timeTo);
+        Event event = new Event(id, title, detail, timeFrom, timeTo, imageUrl);
         holder.mEvent = event;
 
-        holder.mIdView.setText(id);
+        Picasso.with(mContext).load(imageUrl).into(holder.mImageView);
         holder.mContentView.setText(title);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -78,14 +84,14 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
+        public final ImageView mImageView;
         public final TextView mContentView;
         public Event mEvent;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
+            mImageView = (ImageView) view.findViewById(R.id.event_image);
             mContentView = (TextView) view.findViewById(R.id.content);
         }
 
