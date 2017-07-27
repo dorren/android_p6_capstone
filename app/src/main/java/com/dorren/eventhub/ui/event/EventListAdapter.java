@@ -48,12 +48,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         String timeFrom = mCursor.getString(mCursor.getColumnIndex(Event.COL_TIME_FROM));
         String timeTo = mCursor.getString(mCursor.getColumnIndex(Event.COL_TIME_TO));
         String imageUrl = mCursor.getString(mCursor.getColumnIndex(Event.COL_IMAGE_URL));
+        String location = mCursor.getString(mCursor.getColumnIndex(Event.COL_LOCATION));
 
-        Event event = new Event(id, title, detail, timeFrom, timeTo, imageUrl);
+        Event event = new Event(id, title, detail, timeFrom, timeTo, imageUrl, location);
         holder.mEvent = event;
 
         Picasso.with(mContext).load(imageUrl).into(holder.mImageView);
-        holder.mDateView.setText(event.dateStr());
+        holder.mDateView.setText(event.dateStringShort(event.time_from));
         holder.mTitleView.setText(title);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

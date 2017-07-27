@@ -19,6 +19,7 @@ public class Event {
     public static final String COL_TIME_FROM = "time_from";
     public static final String COL_TIME_TO = "time_to";
     public static final String COL_IMAGE_URL = "image_url";
+    public static final String COL_LOCATION = "location";
 
     public String id;
     public String title;
@@ -26,15 +27,22 @@ public class Event {
     public OffsetDateTime time_from;
     public OffsetDateTime time_to;
     public String image_url;
+    public String location;
 
-    public Event(String id, String title, String detail,
-                 String timeFrom, String timeTo, String imageUrl){
+    public Event(String id,
+                 String title,
+                 String detail,
+                 String timeFrom,
+                 String timeTo,
+                 String imageUrl,
+                 String location){
         this.id = id;
         this.title = title;
         this.detail = detail;
         this.time_from = OffsetDateTime.parse(timeFrom);
         this.time_to = OffsetDateTime.parse(timeTo);
         this.image_url = imageUrl;
+        this.location = location;
     }
 
     public static Event fromJson(String json){
@@ -58,8 +66,35 @@ public class Event {
         return event;
     }
 
-    public String dateStr(){
-        String str = time_from.format(DateTimeFormatter.ofPattern("EEE MM/dd"));
+    public boolean isSameDay(){
+        return time_from.toLocalDate().equals(time_to.toLocalDate());
+    }
+
+    public String dateStringShort(OffsetDateTime dt){
+        return dateString(dt, "EEE MM/dd");
+    }
+
+    public String dateStringLong(OffsetDateTime dt){
+        return dateString(dt, "EEEEEEE MM/dd/yyyy");
+    }
+
+    /**
+     * return one line string about the date.
+     *
+     * @return one line string of time from and time to.
+     */
+    public String dateStringFromTo() {
+        String result =  dateString(time_from, "EEEE MM/dd HH:mm a");
+        if(isSameDay()) {
+            result += dateString(time_to, " - HH:mm a");
+        }else{
+            result += dateString(time_to, " - EEEE MM/dd HH:mm a");
+        }
+        return result;
+    }
+
+    private String dateString(OffsetDateTime dt, String pattern){
+        String str = dt.format(DateTimeFormatter.ofPattern(pattern));
         return str;
     }
 

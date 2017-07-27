@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 public class EventDetailActivity extends AppCompatActivity {
     private static final String TAG = "EventDetail";
     private ImageView mMainImageView;
-    private TextView mTitle;
+    private TextView mTitle, mTime, mDetail, mLocation;
     private Event mEvent;
 
     @Override
@@ -24,6 +24,9 @@ public class EventDetailActivity extends AppCompatActivity {
 
         mMainImageView = (ImageView) findViewById(R.id.event_image);
         mTitle = (TextView) findViewById(R.id.event_title);
+        mTime = (TextView) findViewById(R.id.event_time);
+        mDetail = (TextView) findViewById(R.id.event_detail);
+        mLocation = (TextView) findViewById(R.id.event_location);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -38,5 +41,9 @@ public class EventDetailActivity extends AppCompatActivity {
     protected void render() {
         Picasso.with(this).load(mEvent.image_url).into(mMainImageView);
         mTitle.setText(mEvent.title);
+        mTime.setText(mEvent.dateStringFromTo());
+        mDetail.setText(mEvent.detail);
+        mLocation.setText(mEvent.location);
+
     }
 }

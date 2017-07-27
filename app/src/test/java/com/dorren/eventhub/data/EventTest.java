@@ -8,7 +8,8 @@ import com.google.gson.GsonBuilder;
 import org.junit.Test;
 import org.threeten.bp.OffsetDateTime;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
 /**
  * Created by dorrenchen on 7/26/17.
  */
@@ -19,11 +20,13 @@ public class EventTest {
         Event event = new Event("1", "playing tennis", "playing tennis at park",
                                 "2017-08-06T18:00:00.0000-05:00",
                                 "2017-08-06T19:00:00.0000-05:00",
-                                "https://s3.amazonaws.com/eventhubapp/tennis.jpg");
+                                "https://s3.amazonaws.com/eventhubapp/tennis.jpg",
+                                "Colden St, Flushing, NY 11355");
         String json = event.toString();
 
         Event event2 = Event.fromJson(json);
         assertEquals(event.time_from, event2.time_from);
+        assertTrue(event.isSameDay());
     }
 
     @Test
