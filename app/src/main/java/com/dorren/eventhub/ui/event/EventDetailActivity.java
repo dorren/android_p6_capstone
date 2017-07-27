@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.model.Event;
 import com.squareup.picasso.Picasso;
+
+import java.util.regex.Pattern;
 
 public class EventDetailActivity extends AppCompatActivity {
     private static final String TAG = "EventDetail";
@@ -28,9 +31,9 @@ public class EventDetailActivity extends AppCompatActivity {
         mTitle = (TextView) findViewById(R.id.event_title);
         mTime = (TextView) findViewById(R.id.event_time);
         mDetail = (TextView) findViewById(R.id.event_detail);
+
         mLocation = (TextView) findViewById(R.id.event_location);
         mLocation.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View v) {
                 String location = (String)((TextView) v).getText();
@@ -53,7 +56,10 @@ public class EventDetailActivity extends AppCompatActivity {
         mTitle.setText(mEvent.title);
         mTime.setText(mEvent.dateStringFromTo());
         mDetail.setText(mEvent.detail);
+
         mLocation.setText(mEvent.location);
+        Pattern pattern = Pattern.compile(".*", Pattern.DOTALL);
+        Linkify.addLinks(mLocation, pattern, "geo:0,0?q=");
     }
 
     private void openLocationInMap(String location) {
