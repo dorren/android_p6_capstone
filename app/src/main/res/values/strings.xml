@@ -19,4 +19,6 @@
     <!-- fields saved in shared pref. -->
     <string name="prefs_name">event_hub_preferences</string>
     <string name="current_user_json">current_user_json</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-4483146477964144/1337930153</string>
 </resources>

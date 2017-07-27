@@ -21,17 +21,25 @@ import com.dorren.eventhub.model.Event;
 import com.dorren.eventhub.ui.user.LoginActivity;
 import com.dorren.eventhub.util.AppUtil;
 import com.dorren.eventhub.util.PreferenceUtil;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class MainActivity extends AppCompatActivity implements
         EventListFragment.EventListFragmentListener,
         LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "MainActivity";
     private EventListFragment mEventListFragment;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().
+                addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        mAdView.loadAd(adRequest);
 
         mEventListFragment = (EventListFragment) getFragmentManager().
                                 findFragmentById(R.id.main_event_list_fragment);
