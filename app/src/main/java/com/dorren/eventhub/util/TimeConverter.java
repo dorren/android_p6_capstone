@@ -2,11 +2,6 @@ package com.dorren.eventhub.util;
 
 import org.threeten.bp.OffsetDateTime;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by dorrenchen on 7/19/17.
  */

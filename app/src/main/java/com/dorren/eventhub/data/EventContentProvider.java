@@ -134,9 +134,9 @@ public class EventContentProvider extends ContentProvider {
                 add(Event.COL_ID, event.id).
                 add(Event.COL_TITLE, event.title).
                 add(Event.COL_DETAIL, event.detail).
-                add(Event.COL_TIME_FROM, event.timeFrom).
-                add(Event.COL_TIME_TO, event.timeTo).
-                add(Event.COL_IMAGE_URL, event.imageUrl);
+                add(Event.COL_TIME_FROM, event.time_from).
+                add(Event.COL_TIME_TO, event.time_to).
+                add(Event.COL_IMAGE_URL, event.image_url);
         }
 
         return cursor;

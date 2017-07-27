@@ -1,5 +1,6 @@
 package com.dorren.eventhub.ui.event;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.EventContentProvider;
@@ -77,6 +79,13 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(Event event) {
-        Log.d(TAG, "clicked event " + event.title);
+        //openDetailPage(event);
+    }
+
+    private void openDetailPage(Event event) {
+        Intent intent = new Intent(this, EventDetailActivity.class);
+        String json = event.toString();
+        intent.putExtra(Intent.EXTRA_TEXT, json);
+        startActivity(intent);
     }
 }

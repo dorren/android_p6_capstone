@@ -1,7 +1,10 @@
 package com.dorren.eventhub.ui.event;
 
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,11 +59,26 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                openDetailActivity(v, holder.mEvent);
+
                 if (null != mListener) {
                     mListener.onClick(holder.mEvent);
                 }
             }
         });
+    }
+
+    private void openDetailActivity(View view, Event event){
+        ImageView img = (ImageView)view.findViewById(R.id.event_image);
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation((MainActivity)mContext,
+                img, img.getTransitionName()
+        ).toBundle();
+
+        Intent intent = new Intent(mContext, EventDetailActivity.class);
+        String json = event.toString();
+        intent.putExtra(Intent.EXTRA_TEXT, json);
+
+        mContext.startActivity(intent, bundle);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class ApiServiceTest {
             assertTrue(events.length > 0);
 
             Event event = events[0];
-            assertNotNull(event.timeFrom);
+            assertNotNull(event.time_from);
         }catch (ApiException ex){
             ex.printStackTrace();
         }
