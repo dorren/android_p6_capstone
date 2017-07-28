@@ -7,14 +7,10 @@ import com.google.gson.Gson;
  */
 
 public class User {
-    private String id;
-    private String email;
-    private String name;
+    public String id;
+    public String email;
+    public String name;
 
-    public void setName(String name){ this.name = name; }
-    public String getName() { return name; }
-    public void setEmail(String email){ this.email = email; }
-    public String getEmail() { return email; }
 
     public String toJson(){
         Gson gson = new Gson();

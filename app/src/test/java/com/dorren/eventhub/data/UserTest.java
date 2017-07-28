@@ -15,12 +15,12 @@ public class UserTest {
     @Test
     public void testToJson() throws JSONException {
         User user = new User();
-        user.setName("John");
-        user.setEmail("john@gmail.com");
+        user.name = "John";
+        user.email = "john@gmail.com";
 
         String str = user.toJson();
         User clone = User.fromJson(str);
-        assertEquals(clone.getName(), "John");
-        assertEquals(clone.getEmail(), "john@gmail.com");
+        assertEquals(clone.name, "John");
+        assertEquals(clone.email, "john@gmail.com");
     }
 }

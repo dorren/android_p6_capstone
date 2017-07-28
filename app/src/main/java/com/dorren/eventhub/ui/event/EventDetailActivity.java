@@ -1,17 +1,32 @@
 package com.dorren.eventhub.ui.event;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dorren.eventhub.MapActivity;
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.model.Event;
+import com.dorren.eventhub.model.User;
+import com.dorren.eventhub.model.UserEvent;
+import com.dorren.eventhub.util.AppUtil;
+import com.dorren.eventhub.util.NetworkUtil;
+import com.dorren.eventhub.util.PreferenceUtil;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class EventDetailActivity extends AppCompatActivity {
     private static final String TAG = "EventDetail";
@@ -64,5 +79,77 @@ public class EventDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MapActivity.class);
         intent.putExtra(Intent.EXTRA_TEXT, address);
         startActivity(intent);
+    }
+
+    public void bookmarkEvent(View view){
+        User user = PreferenceUtil.getCurrentUser(this);
+        UserEvent ue = new UserEvent(mEvent.id, user.id);
+        ue.user_action = UserEvent.ACTION_BOOKMARK;
+
+        UserEventTask task = new UserEventTask(this);
+        task.execute(ue);
+    }
+
+    public void confirmEvent(View view){
+        User user = PreferenceUtil.getCurrentUser(this);
+        UserEvent ue = new UserEvent(mEvent.id, user.id);
+        ue.user_action = UserEvent.ACTION_CONFIRM;
+
+        UserEventTask task = new UserEventTask(this);
+        task.execute(ue);
+    }
+
+    public class UserEventTask extends AsyncTask<UserEvent, Void, UserEvent> {
+        private Context mContext;
+        private String mErrorMsg;
+
+        public UserEventTask(Context context){
+            mContext = context;
+        }
+
+        @Override
+        protected UserEvent doInBackground(UserEvent... params) {
+            UserEvent ue = params[0];
+            UserEvent result = null;
+
+            try {
+                result = bookmark(ue);
+            } catch (Exception e) {
+                e.printStackTrace();
+                mErrorMsg = e.getMessage();
+            }
+            return ue;
+        }
+
+        private UserEvent bookmark(UserEvent ue)
+                throws IOException, JSONException {
+
+            Uri uri = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().
+                        appendPath("events").
+                        appendPath(ue.event_id).
+                        appendPath(ue.user_action).  // "bookmark" or "confirm"
+                        build();
+            URL url = new URL(uri.toString());
+
+            JSONObject data = new JSONObject();
+            data.put("user_id", ue.user_id);
+
+            String response = NetworkUtil.query(url, "PUT", data);
+            JSONObject json = new JSONObject(response);
+
+            if(json.has(AppUtil.errKey)){
+                mErrorMsg = json.getString(AppUtil.errKey);
+            }else{
+                UserEvent ue2 = UserEvent.fromJson(response);
+                return ue;
+            }
+
+            return ue;
+        }
+
+        @Override
+        protected void onPostExecute(UserEvent userEvent) {
+            Toast.makeText(mContext, "Event "+ userEvent.user_action + "ed", Toast.LENGTH_LONG).show();
+        }
     }
 }
