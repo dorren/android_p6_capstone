@@ -1,25 +1,22 @@
 package com.dorren.eventhub.ui.event;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dorren.eventhub.MapActivity;
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.model.Event;
 import com.squareup.picasso.Picasso;
 
-import java.util.regex.Pattern;
-
 public class EventDetailActivity extends AppCompatActivity {
     private static final String TAG = "EventDetail";
     private ImageView mMainImageView;
-    private TextView mTitle, mTime, mDetail, mLocation;
+    private TextView mTitle, mTime, mDetail, mAddress;
     private Event mEvent;
 
     @Override
@@ -32,12 +29,13 @@ public class EventDetailActivity extends AppCompatActivity {
         mTime = (TextView) findViewById(R.id.event_time);
         mDetail = (TextView) findViewById(R.id.event_detail);
 
-        mLocation = (TextView) findViewById(R.id.event_location);
-        mLocation.setOnClickListener(new View.OnClickListener(){
+        mAddress = (TextView) findViewById(R.id.event_location);
+        mAddress.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String location = (String)((TextView) v).getText();
-                openLocationInMap(location);
+                String address = (String)((TextView) v).getText();
+                Log.d(TAG, "onClick address " + address);
+                openMapActivity(address);
             }
         });
 
@@ -52,27 +50,19 @@ public class EventDetailActivity extends AppCompatActivity {
     }
 
     protected void render() {
+        Log.d(TAG, "render()");
         Picasso.with(this).load(mEvent.image_url).into(mMainImageView);
         mTitle.setText(mEvent.title);
         mTime.setText(mEvent.dateStringFromTo());
         mDetail.setText(mEvent.detail);
 
-        mLocation.setText(mEvent.location);
-        Pattern pattern = Pattern.compile(".*", Pattern.DOTALL);
-        Linkify.addLinks(mLocation, pattern, "geo:0,0?q=");
+        mAddress.setText(mEvent.location);
     }
 
-    private void openLocationInMap(String location) {
-        Uri geoLocation = Uri.parse("geo:0,0?q=" + location);
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(geoLocation);
-
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        } else {
-            Log.d(TAG, "Couldn't call " + geoLocation.toString()
-                    + ", no receiving apps installed!");
-        }
+    private void openMapActivity(String address){
+        Log.d(TAG, "Open map activity");
+        Intent intent = new Intent(this, MapActivity.class);
+        intent.putExtra(Intent.EXTRA_TEXT, address);
+        startActivity(intent);
     }
 }

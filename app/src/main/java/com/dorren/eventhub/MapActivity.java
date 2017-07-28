@@ -1,7 +1,9 @@
 package com.dorren.eventhub;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -10,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.dorren.eventhub.model.Event;
 import com.dorren.eventhub.util.GeoUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -38,11 +41,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Location mTargetLocation;
     private Location mUserLocation;
     private GoogleMap mMap;
+    private String mAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        Log.d(TAG, "onCreate()");
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
+            mAddress = intent.getStringExtra(Intent.EXTRA_TEXT);
+        }
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */,
@@ -60,14 +70,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap map) {
         mMap = map;
 
-        String address = "Flushing Meadows Corona Park Aquatic Center, Queens, NY";
-        mTargetLocation = GeoUtil.address2Location(this, address);
+        mTargetLocation = GeoUtil.address2Location(this, mAddress);
 
-        LatLng ll = GeoUtil.location2LatLng(mTargetLocation);
-        map.addMarker(new MarkerOptions().position(ll).title("Marker"));
-
-        getDeviceLocation();
-        renderMap();
+        if(mTargetLocation == null){
+            Log.d(TAG, "fail to find address " + mAddress);
+            openExternalMap(mAddress);
+            finish();
+        }else {
+            LatLng ll = GeoUtil.location2LatLng(mTargetLocation);
+            map.addMarker(new MarkerOptions().position(ll).title("Destination"));
+            getDeviceLocation();
+            renderMap();
+        }
     }
 
     private void renderMap() {
@@ -117,7 +131,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             mUserLocation = LocationServices.FusedLocationApi
                     .getLastLocation(mGoogleApiClient);
         }else{
-            Log.d(TAG, "permission not granted");
+            Log.d(TAG, "location permission not granted");
         }
         if (mUserLocation == null) {
         //if(false){
@@ -155,5 +169,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Log.d(TAG, "----- onLocationChanged " + mUserLocation);
 
         renderMap();
+    }
+
+    private void openExternalMap(String location) {
+        Uri uri = Uri.parse("geo:0,0?q=" + location);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(uri);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "Couldn't call " + uri.toString()
+                     + ", no receiving apps installed!");
+        }
     }
 }

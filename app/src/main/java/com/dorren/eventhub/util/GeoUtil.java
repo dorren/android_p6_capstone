@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -15,8 +16,9 @@ import java.util.List;
  */
 
 public class GeoUtil {
+    private static final String TAG = GeoUtil.class.getSimpleName();
 
-    public static LatLng addressToLanLng(Context context, String strAddress) {
+    public static LatLng addressToLatLng(Context context, String strAddress) {
 
         Geocoder coder = new Geocoder(context);
         List<Address> address;
@@ -24,9 +26,10 @@ public class GeoUtil {
 
         try {
             address = coder.getFromLocationName(strAddress,5);
-            if (address==null) {
+            if (address==null || address.size() == 0) {
                 return null;
             }
+            Log.d(TAG, address.toString());
             Address location=address.get(0);
             location.getLatitude();
             location.getLongitude();
@@ -41,7 +44,7 @@ public class GeoUtil {
 
     public static Location address2Location(Context context, String address){
         Location location = null;
-        LatLng point = GeoUtil.addressToLanLng(context, address);
+        LatLng point = GeoUtil.addressToLatLng(context, address);
 
         if(point != null) {
             location = new Location("");
