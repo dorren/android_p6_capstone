@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.dorren.eventhub.MapActivity;
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.model.User;
 import com.dorren.eventhub.ui.event.MainActivity;
@@ -83,7 +84,8 @@ public class SplashActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext, LoginActivity.class);
                 startActivityForResult(intent, AppUtil.LOGIN_REQUEST);
             }else{
-                Intent intent = new Intent(mContext, MainActivity.class);
+                //Intent intent = new Intent(mContext, MainActivity.class);
+                Intent intent = new Intent(mContext, MapActivity.class);
                 startActivity(intent);
             }
         }
