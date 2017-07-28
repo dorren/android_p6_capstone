@@ -3,8 +3,8 @@ package com.dorren.eventhub;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.dorren.eventhub.util.GeoPoint;
 import com.dorren.eventhub.util.GeoUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,6 +14,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private GoogleApiClient mGoogleApiClient;
+    private LatLng point;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap map) {
         String address = "Flushing Meadows Corona Park Aquatic Center, Queens, NY";
-        GeoPoint point = GeoUtil.addressToGeo(this, address);
+        LatLng point = GeoUtil.addressToGeo(this, address);
         //double lat = 40.7344387;
         //double lng = -73.8404625;
         double lat = point.latitude;
@@ -41,5 +43,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         map.moveCamera(center);
         map.animateCamera(zoom);
+    }
+
+    private void getCurrentLocation(){
+
     }
 }
