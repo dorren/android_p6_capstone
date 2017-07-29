@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:text="@string/email"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
-    
+
     <TextView
         android:id="@+id/profile_email"
         android:layout_width="match_parent"

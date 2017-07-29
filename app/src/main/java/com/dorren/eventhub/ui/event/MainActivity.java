@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements
                             replaceFragment(mProfileFragment);
                             break;
                     }
-                    return false;
+                    return true;
                 }
             });
     }
