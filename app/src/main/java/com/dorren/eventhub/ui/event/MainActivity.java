@@ -1,50 +1,73 @@
 package com.dorren.eventhub.ui.event;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
 import com.dorren.eventhub.R;
-import com.dorren.eventhub.data.EventContentProvider;
 import com.dorren.eventhub.model.Event;
 import com.dorren.eventhub.ui.user.LoginActivity;
+import com.dorren.eventhub.ui.user.ProfileFragment;
 import com.dorren.eventhub.util.AppUtil;
 import com.dorren.eventhub.util.PreferenceUtil;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 public class MainActivity extends AppCompatActivity implements
-        EventListFragment.EventListFragmentListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String TAG = "MainActivity";
+        EventListFragment.EventListFragmentListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private BottomNavigationView mBtmNav;
+
+    private FragmentManager mFragmentMgr;
     private EventListFragment mEventListFragment;
-    private AdView mAdView;
+    private ProfileFragment mProfileFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().
-                addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        mAdView.loadAd(adRequest);
+        mEventListFragment = new EventListFragment();
+        mProfileFragment = new ProfileFragment();
 
-        mEventListFragment = (EventListFragment) getFragmentManager().
-                                findFragmentById(R.id.main_event_list_fragment);
+        mFragmentMgr = getSupportFragmentManager();
+        mFragmentMgr.beginTransaction()
+                .add(R.id.main_fragment_holder, mEventListFragment)
+                .commit();
 
-        getSupportLoaderManager().initLoader(AppUtil.EVENTS_CURSOR_LOADER, null, this);
+        mBtmNav = (BottomNavigationView) findViewById(R.id.bottom_nav);
+        mBtmNav.setOnNavigationItemSelectedListener(
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.action_home:
+                            replaceFragment(mEventListFragment);
+                            break;
+                        case R.id.action_schedule:
+                            break;
+                        case R.id.action_me:
+                            replaceFragment(mProfileFragment);
+                            break;
+                    }
+                    return false;
+                }
+            });
+    }
+
+    private void replaceFragment(Fragment fragment){
+        mFragmentMgr.beginTransaction()
+                .replace(R.id.main_fragment_holder, fragment)
+                .commit();
     }
 
     @Override
@@ -66,23 +89,6 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this,
-                EventContentProvider.EVENT_URI,
-                null, null, null, null);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        mEventListFragment.swapCursor(cursor);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
     }
 
     @Override

@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.dorren.eventhub.ui.event.MainActivity">
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
+    <LinearLayout
+        android:id="@+id/main_fragment_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/list_bottom_margin"
+        android:layout_below="@+id/adView"/>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="10dp"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id">
-    </com.google.android.gms.ads.AdView>
-
-    <fragment
-        android:id="@+id/main_event_list_fragment"
-        android:name="com.dorren.eventhub.ui.event.EventListFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</android.support.v7.widget.LinearLayoutCompat>
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/main_bottom_nav" />
+</RelativeLayout>
