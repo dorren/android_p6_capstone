@@ -1,6 +1,8 @@
 package com.dorren.eventhub.ui.event;
 
+import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.EventContentProvider;
 import com.dorren.eventhub.model.Event;
+import com.dorren.eventhub.ui.newevent.NewEventActivity;
 import com.dorren.eventhub.util.AppUtil;
 import com.dorren.eventhub.util.PreferenceUtil;
 import com.google.android.gms.ads.AdRequest;
@@ -43,6 +46,7 @@ public class EventListFragment extends Fragment implements
     private RecyclerView mRecyclerView;
     private EventListAdapter mAdapter;
     private AdView mAdView;
+    private FloatingActionButton mFab;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -94,6 +98,13 @@ public class EventListFragment extends Fragment implements
         mAdapter = new EventListAdapter(null, this);
         mRecyclerView.setAdapter(mAdapter);
 
+        mFab = (FloatingActionButton) rootView.findViewById(R.id.fab_new_event);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toNewEvent(view);
+            }
+        });
         return rootView;
     }
 
@@ -179,6 +190,11 @@ public class EventListFragment extends Fragment implements
 
     public void swapCursor(Cursor cursor){
         mAdapter.swapCursor(cursor);
+    }
+
+    public void toNewEvent(View view) {
+        Intent intent = new Intent(getActivity(), NewEventActivity.class);
+        startActivity(intent);
     }
     /**
      * This interface must be implemented by activities that contain this

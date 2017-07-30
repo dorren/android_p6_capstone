@@ -36,4 +36,6 @@
     <string name="bookmarked">bookmarked</string>
     <string name="confirmed">confirmed</string>
     <string name="organized">organized</string>
+
+    <string name="desc_add_event">Add new event</string>
 </resources>

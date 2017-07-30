@@ -89,15 +89,12 @@ public class MainActivity extends AppCompatActivity implements
                 @Override
                 public void onClick(View v) {
                     if(v.getId() == R.id.event_type_all){
-                        Log.d(TAG, "type all");
                         mEventListFragment = EventListFragment.newInstance(Event.TYPE_ALL);
                         replaceFragment(mEventListFragment);
                     }else if(v.getId() == R.id.event_type_bookmarked){
-                        Log.d(TAG, "type bookmarked");
                         mEventListFragment = EventListFragment.newInstance(Event.TYPE_BOOKMARKED);
                         replaceFragment(mEventListFragment);
                     }else if(v.getId() == R.id.event_type_confirmed){
-                        Log.d(TAG, "type bookmarked");
                         mEventListFragment = EventListFragment.newInstance(Event.TYPE_CONFIRMED);
                         replaceFragment(mEventListFragment);
                     }
