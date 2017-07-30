@@ -1,5 +1,6 @@
 package com.dorren.eventhub.ui.event;
 
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +19,12 @@ import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.EventContentProvider;
 import com.dorren.eventhub.model.Event;
 import com.dorren.eventhub.util.AppUtil;
+import com.dorren.eventhub.util.PreferenceUtil;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A fragment representing a list of Items.
@@ -29,6 +35,10 @@ import com.google.android.gms.ads.AdView;
 public class EventListFragment extends Fragment implements
         EventListAdapter.EventListAdapterListener,
         LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String TAG = EventListFragment.class.getSimpleName();
+
+    public static final String EVENT_TYPE = "event_type";
+    private String mEventType;
     private EventListFragmentListener mListener;
     private RecyclerView mRecyclerView;
     private EventListAdapter mAdapter;
@@ -38,18 +48,36 @@ public class EventListFragment extends Fragment implements
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public EventListFragment() {
+    private EventListFragment() {
+    }
+
+    /**
+     * return this instance with filtered events.
+     *
+     * @param event_type all, bookmarked, confirmed, or organized
+     * @return EventListFragment
+     */
+    public static EventListFragment newInstance(String event_type){
+        EventListFragment fragment = new EventListFragment();
+        Bundle args = new Bundle();
+        args.putString(EVENT_TYPE, event_type);
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "onCreate " + mEventType);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView " + mEventType);
         View rootView = inflater.inflate(R.layout.fragment_event_list, container, false);
 
         mAdView = (AdView) rootView.findViewById(R.id.adView);
@@ -73,12 +101,21 @@ public class EventListFragment extends Fragment implements
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        if (getArguments() != null) {
+            mEventType = getArguments().getString(EVENT_TYPE);
+        }else{
+            mEventType = Event.TYPE_ALL;
+        }
+
         if (context instanceof EventListFragmentListener) {
             mListener = (EventListFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
+
+        Log.d(TAG, "onAttach " + mEventType);
 
         getLoaderManager().initLoader(AppUtil.EVENTS_CURSOR_LOADER, null, this);
     }
@@ -96,9 +133,38 @@ public class EventListFragment extends Fragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(),
-                EventContentProvider.EVENT_URI,
-                null, null, null, null);
+        Log.d(TAG, "onCreateLoader " + mEventType);
+
+        try {
+            if (mEventType == Event.TYPE_ALL) {
+                return new CursorLoader(getActivity(),
+                        EventContentProvider.EVENT_URI,
+                        null, null, null, null);
+            } else if (mEventType == Event.TYPE_BOOKMARKED) {
+                String userId = PreferenceUtil.getCurrentUser(getActivity()).id;
+                JSONObject options = new JSONObject();
+                options.put("user_id", userId);
+                options.put("bookmarked", true);
+                return new CursorLoader(getActivity(),
+                        EventContentProvider.MY_EVENT_URI,
+                        null, options.toString(), null, null);
+            } else if (mEventType == Event.TYPE_CONFIRMED) {
+                String userId = PreferenceUtil.getCurrentUser(getActivity()).id;
+                JSONObject options = new JSONObject();
+                options.put("user_id", userId);
+                options.put("confirmed", true);
+                return new CursorLoader(getActivity(),
+                        EventContentProvider.MY_EVENT_URI,
+                        null, options.toString(), null, null);
+            } else {
+                return new CursorLoader(getActivity(),
+                        EventContentProvider.EVENT_URI,
+                        null, null, null, null);
+            }
+        }catch (JSONException ex){
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Override

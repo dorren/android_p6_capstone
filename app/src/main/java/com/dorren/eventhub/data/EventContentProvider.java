@@ -15,6 +15,7 @@ import com.dorren.eventhub.model.Event;
 import com.dorren.eventhub.model.User;
 import com.dorren.eventhub.util.AppUtil;
 import com.dorren.eventhub.util.NetworkUtil;
+import com.dorren.eventhub.util.PreferenceUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +34,9 @@ public class EventContentProvider extends ContentProvider {
     //public static final Uri EVENT_URI =  BASE_CONTENT_URI.buildUpon().appendPath(PATH_EVENTS).build();
     public static final Uri EVENT_URI =  Uri.withAppendedPath(BASE_CONTENT_URI, PATH_EVENTS);
 
+    public static final int CODE_MY_EVENTS = 101;
+    public static final String PATH_MY_EVENTS = "me/events";
+    public static final Uri MY_EVENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_MY_EVENTS);
 
     private ApiService api;
 
@@ -41,6 +45,7 @@ public class EventContentProvider extends ContentProvider {
     public static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         matcher.addURI(AUTHORITY, PATH_EVENTS, CODE_EVENTS);
+        matcher.addURI(AUTHORITY, PATH_MY_EVENTS, CODE_MY_EVENTS);
         return matcher;
     }
 
@@ -61,6 +66,10 @@ public class EventContentProvider extends ContentProvider {
 
         switch (match){
             case CODE_EVENTS:{
+                result = ContentResolver.CURSOR_DIR_BASE_TYPE;
+                break;
+            }
+            case CODE_MY_EVENTS:{
                 result = ContentResolver.CURSOR_DIR_BASE_TYPE;
                 break;
             }
@@ -95,6 +104,17 @@ public class EventContentProvider extends ContentProvider {
                 Event[] events = new Event[0];
                 try {
                     events = api.getEvents();
+                    cursor = buildCursor(events);
+                } catch (ApiException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            }
+            case CODE_MY_EVENTS: {
+                Event[] events = new Event[0];
+                try {
+                    events = api.getMyEvents(selection);
                     cursor = buildCursor(events);
                 } catch (ApiException e) {
                     e.printStackTrace();

@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="event_type_nav">
+        <item name="android:padding">@dimen/activity_horizontal_margin</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="android:textColor">@color/event_type_nav</item>
+        <item name="android:button">@android:color/transparent</item>
+    </style>
 </resources>

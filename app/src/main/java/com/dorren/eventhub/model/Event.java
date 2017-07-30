@@ -21,6 +21,11 @@ public class Event {
     public static final String COL_IMAGE_URL = "image_url";
     public static final String COL_LOCATION = "location";
 
+    public static final String TYPE_ALL = "all";
+    public static final String TYPE_BOOKMARKED = "bookmarked";
+    public static final String TYPE_CONFIRMED = "confirmed";
+    public static final String TYPE_ORGANIZED = "organized";
+
     public String id;
     public String title;
     public String detail;

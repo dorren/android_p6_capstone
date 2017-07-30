@@ -7,13 +7,75 @@
     android:orientation="vertical"
     tools:context="com.dorren.eventhub.ui.event.MainActivity">
 
+    <HorizontalScrollView
+        android:id="@+id/event_type_scroller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioGroup
+            android:id="@+id/event_type_nav"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+
+            <RadioButton
+                android:id="@+id/event_type_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All"
+                style="@style/event_type_nav"
+                android:padding="@dimen/activity_horizontal_margin"/>
+
+            <RadioButton
+                android:id="@+id/event_type_bookmarked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bookmarked"
+                style="@style/event_type_nav"/>
+
+            <RadioButton
+                android:id="@+id/event_type_confirmed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirmed"
+                style="@style/event_type_nav"/>
+
+            <RadioButton
+                android:id="@+id/event_type_organized"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Organized"
+                style="@style/event_type_nav"/>
+
+            <RadioButton
+                android:id="@+id/event_type_planning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Planning"
+                style="@style/event_type_nav"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Custom1"
+                style="@style/event_type_nav"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Custom2"
+                style="@style/event_type_nav"/>
+        </RadioGroup>
+    </HorizontalScrollView>
+
     <LinearLayout
         android:id="@+id/main_fragment_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginBottom="@dimen/list_bottom_margin"
-        android:layout_below="@+id/adView"/>
+        android:layout_below="@id/event_type_scroller"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_nav"

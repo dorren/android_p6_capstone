@@ -11,9 +11,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.model.Event;
+import com.dorren.eventhub.ui.myevent.MyEventFragment;
 import com.dorren.eventhub.ui.user.LoginActivity;
 import com.dorren.eventhub.ui.user.ProfileFragment;
 import com.dorren.eventhub.util.AppUtil;
@@ -25,10 +30,12 @@ public class MainActivity extends AppCompatActivity implements
         EventListFragment.EventListFragmentListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private RadioGroup mEventTypeNav;
     private BottomNavigationView mBtmNav;
 
     private FragmentManager mFragmentMgr;
     private EventListFragment mEventListFragment;
+    private MyEventFragment mMyEventFragment;
     private ProfileFragment mProfileFragment;
 
     @Override
@@ -36,7 +43,11 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mEventListFragment = new EventListFragment();
+        mEventTypeNav = (RadioGroup) findViewById(R.id.event_type_nav);
+        setupEventTypeNav();
+
+        mEventListFragment = EventListFragment.newInstance(Event.TYPE_ALL);
+        mMyEventFragment = new MyEventFragment();
         mProfileFragment = new ProfileFragment();
 
         mFragmentMgr = getSupportFragmentManager();
@@ -54,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements
                             replaceFragment(mEventListFragment);
                             break;
                         case R.id.action_schedule:
+                            replaceFragment(mMyEventFragment);
                             break;
                         case R.id.action_me:
                             replaceFragment(mProfileFragment);
@@ -68,6 +80,30 @@ public class MainActivity extends AppCompatActivity implements
         mFragmentMgr.beginTransaction()
                 .replace(R.id.main_fragment_holder, fragment)
                 .commit();
+    }
+
+    private void setupEventTypeNav() {
+        for(int index=0; index< mEventTypeNav.getChildCount(); index++) {
+            RadioButton btn = (RadioButton) mEventTypeNav.getChildAt(index);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(v.getId() == R.id.event_type_all){
+                        Log.d(TAG, "type all");
+                        mEventListFragment = EventListFragment.newInstance(Event.TYPE_ALL);
+                        replaceFragment(mEventListFragment);
+                    }else if(v.getId() == R.id.event_type_bookmarked){
+                        Log.d(TAG, "type bookmarked");
+                        mEventListFragment = EventListFragment.newInstance(Event.TYPE_BOOKMARKED);
+                        replaceFragment(mEventListFragment);
+                    }else if(v.getId() == R.id.event_type_confirmed){
+                        Log.d(TAG, "type bookmarked");
+                        mEventListFragment = EventListFragment.newInstance(Event.TYPE_CONFIRMED);
+                        replaceFragment(mEventListFragment);
+                    }
+                }
+            });
+        }
     }
 
     @Override

@@ -84,6 +84,53 @@ public class ApiService {
         return events;
     }
 
+    /**
+     *
+     * @return get user bookmarked or confirmed events
+     *
+     * @throws ApiException
+     */
+    public Event[] getMyEvents(String options) throws ApiException {
+        Event[] events = null;
+
+        try {
+
+            Uri.Builder builder = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().
+                    appendPath("me").
+                    appendPath("events");
+
+            JSONObject json = new JSONObject(options);
+            if(json.has("user_id")) {
+                builder.appendQueryParameter("user_id", json.getString("user_id"));
+            }
+            if(json.has("bookmarked")) {
+                builder.appendQueryParameter("bookmarked", String.valueOf(json.getBoolean("bookmarked")));
+            }
+            if(json.has("confirmed")) {
+                builder.appendQueryParameter("confirmed", String.valueOf(json.getBoolean("confirmed")));
+            }
+            Uri uri = builder.build();
+            URL url = new URL(uri.toString());
+
+            String response = NetworkUtil.query(url);
+            json = new JSONObject(response);
+
+            if (json.has(AppUtil.errKey)) {
+                String errorMsg = json.getString(AppUtil.errKey);
+                Log.e(TAG, errorMsg);
+                throw new ApiException(errorMsg);
+            } else {
+                events = fromJsonArray(response);
+            }
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }catch(JSONException ex){
+            ex.printStackTrace();
+        }
+
+        return events;
+    }
+
     private  Event[] fromJsonArray(String jsonStr) throws JSONException {
         JSONObject response = new JSONObject(jsonStr);
         JSONArray jsonEvents = response.getJSONArray("events");

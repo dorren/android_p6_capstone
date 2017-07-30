@@ -31,4 +31,9 @@
     <!-- profile fragment -->
     <string name="name">Name</string>
     <string name="email">Email</string>
+
+    <!-- my events fragment -->
+    <string name="bookmarked">bookmarked</string>
+    <string name="confirmed">confirmed</string>
+    <string name="organized">organized</string>
 </resources>
