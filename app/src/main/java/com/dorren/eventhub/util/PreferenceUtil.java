@@ -1,4 +1,4 @@
-package com.dorren.eventhub.data.util;
+package com.dorren.eventhub.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

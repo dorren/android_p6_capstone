@@ -1,4 +1,4 @@
-package com.dorren.eventhub.data.util;
+package com.dorren.eventhub.util;
 
 /**
  * Created by dorrenchen on 7/22/17.
@@ -15,8 +15,5 @@ public class AppUtil {
 
     // loaders
     public static final int EVENTS_CURSOR_LOADER = 1;
-
-    // error field name, returned from API service.
-    public static final String errKey = "_error";
 
 }

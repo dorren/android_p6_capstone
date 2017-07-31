@@ -6,7 +6,7 @@
     <dimen name="list_bottom_margin">50dp</dimen>
     <dimen name="page_end_margin">150dp</dimen>
 
-    <dimen name="fab_margin">25dp</dimen>
+    <dimen name="fab_margin">20dp</dimen>
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_press_translation_z">6dp</dimen>
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.dorren.eventhub.R;
+import com.dorren.eventhub.data.ApiService;
 import com.dorren.eventhub.data.model.User;
 import com.dorren.eventhub.data.util.AppUtil;
 import com.dorren.eventhub.data.util.NetworkUtil;
@@ -108,8 +109,8 @@ public class SignupActivity extends AppCompatActivity {
             String response = NetworkUtil.query(url, "POST", data);
             JSONObject json = new JSONObject(response);
 
-            if(json.has(AppUtil.errKey)){
-                mErrorMsg = json.getString(AppUtil.errKey);
+            if(json.has(ApiService.errKey)){
+                mErrorMsg = json.getString(ApiService.errKey);
             }else{
                 User user = User.fromJson(response);
                 return user;
