@@ -105,6 +105,6 @@
                 android:text="@android:string/cancel"
                 android:onClick="cancel"/>
         </LinearLayout>
-        
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
