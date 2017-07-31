@@ -1,6 +1,6 @@
 # Android Capstone Project
 
-![main page](doc/images/main_page.png =300x)
+<img src="doc/images/main_page.png" alt="main page" style="width: 300px;"/>
 
 App helps user to manage all upcoming events. 
 
