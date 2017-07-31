@@ -35,6 +35,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/time_from"/>
 
+            <TextView
+                android:id="@+id/time_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+
             <ImageButton
                 android:id="@+id/time_from_btn"
                 android:layout_width="wrap_content"
@@ -43,10 +49,6 @@
                 android:text=""
                 android:onClick="openDatePicker"/>
 
-            <TextView
-                android:id="@+id/time_from"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
         </TableRow>
 
         <TableRow android:gravity="center_vertical">
@@ -56,6 +58,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/time_to"/>
 
+            <TextView
+                android:id="@+id/time_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+
             <ImageButton
                 android:id="@+id/time_to_btn"
                 android:layout_width="wrap_content"
@@ -64,10 +72,6 @@
                 android:text=""
                 android:onClick="openDatePicker"/>
 
-            <TextView
-                android:id="@+id/time_to"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
         </TableRow>
     </TableLayout>
 
@@ -93,6 +97,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@android:string/cancel"/>
+            android:text="@android:string/cancel"
+            android:onClick="cancel"/>
     </LinearLayout>
 </LinearLayout>

@@ -103,7 +103,7 @@ public class EventContentProvider extends ContentProvider {
             case CODE_EVENTS: {
                 Event[] events = new Event[0];
                 try {
-                    events = api.getEvents();
+                    events = api.getEvents(selection);
                     cursor = buildCursor(events);
                 } catch (ApiException e) {
                     e.printStackTrace();

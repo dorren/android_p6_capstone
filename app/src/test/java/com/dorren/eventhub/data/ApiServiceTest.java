@@ -6,6 +6,7 @@ import com.dorren.eventhub.model.Event;
 import com.dorren.eventhub.util.NetworkUtil;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.threeten.bp.OffsetDateTime;
@@ -29,7 +30,7 @@ public class ApiServiceTest {
     @Test
     public void getEvents() throws Exception{
         try {
-            Event[] events = api.getEvents();
+            Event[] events = api.getEvents(new JSONObject().toString());
             assertNotNull(events);
             assertTrue(events.length > 0);
 

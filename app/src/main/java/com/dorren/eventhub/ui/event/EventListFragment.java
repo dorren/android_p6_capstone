@@ -167,7 +167,14 @@ public class EventListFragment extends Fragment implements
                 return new CursorLoader(getActivity(),
                         EventContentProvider.MY_EVENT_URI,
                         null, options.toString(), null, null);
-            } else {
+            } else if (mEventType == Event.TYPE_ORGANIZED) {
+                String userId = PreferenceUtil.getCurrentUser(getActivity()).id;
+                JSONObject options = new JSONObject();
+                options.put("organizer_id", userId);
+                return new CursorLoader(getActivity(),
+                        EventContentProvider.EVENT_URI,
+                        null, options.toString(), null, null);
+            }else {
                 return new CursorLoader(getActivity(),
                         EventContentProvider.EVENT_URI,
                         null, null, null, null);

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.dorren.eventhub.model.Event;
 import com.dorren.eventhub.model.User;
+import com.dorren.eventhub.model.UserEvent;
 import com.dorren.eventhub.util.AppUtil;
 import com.dorren.eventhub.util.NetworkUtil;
 
@@ -56,14 +57,24 @@ public class ApiService {
      * @return get events object from API.
      * @throws ApiException
      */
-    public Event[] getEvents() throws ApiException {
+    public Event[] getEvents(String jsonStr) throws ApiException {
         Event[] events = null;
 
         try {
-            //Uri uri = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().appendPath("events").build();
-            //URL url = new URL(uri.toString());
-            String url_str = NetworkUtil.API_BASE_URL + "/events"; // unit test mocked Uri.parse.
-            URL url = new URL(url_str);
+            if(jsonStr == null){
+                jsonStr = "{}";
+            }
+            JSONObject jsonIn = new JSONObject(jsonStr);
+            Uri.Builder builder = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().appendPath("events");
+            if(jsonIn.has("organizer_id")) {
+                builder.appendQueryParameter("organizer_id", jsonIn.getString("organizer_id"));
+            }
+
+            Uri uri = builder.build();
+            URL url = new URL(uri.toString());
+            //String url_str = NetworkUtil.API_BASE_URL + "/events"; // unit test mocked Uri.parse.
+            //URL url = new URL(url_str);
+
 
             String response = NetworkUtil.query(url);
             JSONObject json = new JSONObject(response);
@@ -82,6 +93,45 @@ public class ApiService {
         }
 
         return events;
+    }
+
+    /**
+     * to bookmark and confirm event.
+     *
+     * @param ue new UserEvent holding the incoming attributes
+     * @return
+     * @throws ApiException
+     */
+    public UserEvent bookmark(UserEvent ue) throws ApiException {
+        UserEvent result = null;
+        try {
+            Uri uri = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().
+                    appendPath("events").
+                    appendPath(ue.event_id).
+                    appendPath(ue.user_action).  // "bookmark" or "confirm"
+                    build();
+            URL url = new URL(uri.toString());
+
+            JSONObject data = new JSONObject();
+            data.put("user_id", ue.user_id);
+
+            String response = NetworkUtil.query(url, "PUT", data);
+            JSONObject json = new JSONObject(response);
+
+            if (json.has(AppUtil.errKey)) {
+                String errorMsg = json.getString(AppUtil.errKey);
+                Log.e(TAG, errorMsg);
+                throw new ApiException(errorMsg);
+            } else {
+                result = UserEvent.fromJson(response);
+            }
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }catch(JSONException ex){
+            ex.printStackTrace();
+        }
+
+        return result;
     }
 
     /**
@@ -129,6 +179,33 @@ public class ApiService {
         }
 
         return events;
+    }
+
+    public Event createEvent(JSONObject json) throws ApiException {
+        Event result = null;
+        try {
+            Uri uri = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().
+                    appendPath("events").
+                    build();
+            URL url = new URL(uri.toString());
+
+            String response = NetworkUtil.query(url, "POST", json);
+            JSONObject res = new JSONObject(response);
+
+            if (res.has(AppUtil.errKey)) {
+                String errorMsg = res.getString(AppUtil.errKey);
+                Log.e(TAG, errorMsg);
+                throw new ApiException(errorMsg);
+            } else {
+                result = Event.fromJson(response);
+            }
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }catch(JSONException ex){
+            ex.printStackTrace();
+        }
+
+        return result;
     }
 
     private  Event[] fromJsonArray(String jsonStr) throws JSONException {

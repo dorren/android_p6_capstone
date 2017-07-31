@@ -5,6 +5,7 @@ import com.dorren.eventhub.util.OffsetDateTimeConverter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONObject;
 import org.junit.Test;
 import org.threeten.bp.OffsetDateTime;
 
@@ -27,6 +28,8 @@ public class EventTest {
         Event event2 = Event.fromJson(json);
         assertEquals(event.time_from, event2.time_from);
         assertTrue(event.isSameDay());
+
+        System.out.println(new JSONObject().toString());
     }
 
     @Test

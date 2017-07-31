@@ -97,6 +97,9 @@ public class MainActivity extends AppCompatActivity implements
                     }else if(v.getId() == R.id.event_type_confirmed){
                         mEventListFragment = EventListFragment.newInstance(Event.TYPE_CONFIRMED);
                         replaceFragment(mEventListFragment);
+                    }else if(v.getId() == R.id.event_type_organized){
+                        mEventListFragment = EventListFragment.newInstance(Event.TYPE_ORGANIZED);
+                        replaceFragment(mEventListFragment);
                     }
                 }
             });

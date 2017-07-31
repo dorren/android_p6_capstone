@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.dorren.eventhub.MapActivity;
 import com.dorren.eventhub.R;
+import com.dorren.eventhub.data.ApiService;
 import com.dorren.eventhub.model.Event;
 import com.dorren.eventhub.model.User;
 import com.dorren.eventhub.model.UserEvent;
@@ -38,6 +40,7 @@ public class EventDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mMainImageView = (ImageView) findViewById(R.id.event_image);
         mTitle = (TextView) findViewById(R.id.event_title);
@@ -62,6 +65,17 @@ public class EventDetailActivity extends AppCompatActivity {
                 render();
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id==android.R.id.home) {
+            finishAfterTransition();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     protected void render() {
@@ -102,9 +116,11 @@ public class EventDetailActivity extends AppCompatActivity {
     public class UserEventTask extends AsyncTask<UserEvent, Void, UserEvent> {
         private Context mContext;
         private String mErrorMsg;
+        private ApiService api;
 
         public UserEventTask(Context context){
             mContext = context;
+            api  = new ApiService();
         }
 
         @Override
@@ -113,37 +129,11 @@ public class EventDetailActivity extends AppCompatActivity {
             UserEvent result = null;
 
             try {
-                result = bookmark(ue);
+                result = api.bookmark(ue);
             } catch (Exception e) {
                 e.printStackTrace();
                 mErrorMsg = e.getMessage();
             }
-            return ue;
-        }
-
-        private UserEvent bookmark(UserEvent ue)
-                throws IOException, JSONException {
-
-            Uri uri = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().
-                        appendPath("events").
-                        appendPath(ue.event_id).
-                        appendPath(ue.user_action).  // "bookmark" or "confirm"
-                        build();
-            URL url = new URL(uri.toString());
-
-            JSONObject data = new JSONObject();
-            data.put("user_id", ue.user_id);
-
-            String response = NetworkUtil.query(url, "PUT", data);
-            JSONObject json = new JSONObject(response);
-
-            if(json.has(AppUtil.errKey)){
-                mErrorMsg = json.getString(AppUtil.errKey);
-            }else{
-                UserEvent ue2 = UserEvent.fromJson(response);
-                return ue;
-            }
-
             return ue;
         }
 
