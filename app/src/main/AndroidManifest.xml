@@ -42,9 +42,7 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".ui.event.EventDetailActivity">
-
-        </activity>
+        <activity android:name=".ui.event.EventDetailActivity"></activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -58,7 +56,23 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
         <activity android:name=".MapActivity" />
-        <activity android:name=".ui.newevent.NewEventActivity"></activity>
+        <activity android:name=".ui.newevent.NewEventActivity" />
+
+        <receiver android:name=".widget.EventWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/event_widget_info" />
+        </receiver>
+
+        <activity android:name=".widget.EventWidgetConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
