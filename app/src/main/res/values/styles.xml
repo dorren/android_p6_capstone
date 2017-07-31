@@ -14,4 +14,9 @@
         <item name="android:textColor">@color/event_type_nav</item>
         <item name="android:button">@android:color/transparent</item>
     </style>
+
+    <style name="asLink">
+        <item name="android:textColor">#0000EE</item>
+        <item name="android:gravity">left</item>
+    </style>
 </resources>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -80,6 +81,11 @@ public class EventDetailActivity extends AppCompatActivity {
 
     protected void render() {
         Log.d(TAG, "render()");
+
+        CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle(mEvent.title);
+
         Picasso.with(this).load(mEvent.image_url).into(mMainImageView);
         mTitle.setText(mEvent.title);
         mTime.setText(mEvent.dateStringFromTo());

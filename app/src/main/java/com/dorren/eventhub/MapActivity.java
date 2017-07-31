@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.dorren.eventhub.model.Event;
 import com.dorren.eventhub.util.GeoUtil;
@@ -47,7 +48,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        Log.d(TAG, "onCreate()");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
@@ -64,6 +65,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .build();
         mGoogleApiClient.connect();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id==android.R.id.home) {
+            finishAfterTransition();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
