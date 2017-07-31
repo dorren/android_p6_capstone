@@ -1,7 +1,6 @@
 package com.dorren.eventhub.ui.user;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dorren.eventhub.R;
-import com.dorren.eventhub.model.User;
-import com.dorren.eventhub.util.PreferenceUtil;
+import com.dorren.eventhub.data.model.User;
+import com.dorren.eventhub.data.util.PreferenceUtil;
 
 /**
  * User profile that shows user name, email.

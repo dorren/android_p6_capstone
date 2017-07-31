@@ -4,30 +4,24 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.ApiService;
-import com.dorren.eventhub.model.Event;
-import com.dorren.eventhub.model.User;
-import com.dorren.eventhub.model.UserEvent;
-import com.dorren.eventhub.util.PreferenceUtil;
-import com.dorren.eventhub.util.TimeUtil;
+import com.dorren.eventhub.data.model.Event;
+import com.dorren.eventhub.data.util.PreferenceUtil;
+import com.dorren.eventhub.data.util.TimeUtil;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.OffsetDateTime;
-import org.threeten.bp.ZoneOffset;
 
 import java.util.Calendar;
 

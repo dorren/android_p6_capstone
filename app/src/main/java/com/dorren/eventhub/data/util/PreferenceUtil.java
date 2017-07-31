@@ -1,10 +1,10 @@
-package com.dorren.eventhub.util;
+package com.dorren.eventhub.data.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.dorren.eventhub.R;
-import com.dorren.eventhub.model.User;
+import com.dorren.eventhub.data.model.User;
 
 /**
  * Created by dorrenchen on 7/19/17.

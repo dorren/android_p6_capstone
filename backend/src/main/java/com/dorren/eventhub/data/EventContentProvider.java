@@ -1,6 +1,5 @@
 package com.dorren.eventhub.data;
 
-import android.content.AsyncQueryHandler;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -8,20 +7,8 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
-import android.util.Log;
 
-import com.dorren.eventhub.R;
-import com.dorren.eventhub.model.Event;
-import com.dorren.eventhub.model.User;
-import com.dorren.eventhub.util.AppUtil;
-import com.dorren.eventhub.util.NetworkUtil;
-import com.dorren.eventhub.util.PreferenceUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URL;
+import com.dorren.eventhub.data.model.Event;
 
 public class EventContentProvider extends ContentProvider {
     private static final String TAG = "EventContentProvider";

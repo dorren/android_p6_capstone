@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dorren.eventhub.R;
-import com.dorren.eventhub.model.Event;
+import com.dorren.eventhub.data.model.Event;
 import com.squareup.picasso.Picasso;
 
 /**

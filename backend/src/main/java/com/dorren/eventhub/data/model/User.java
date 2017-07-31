@@ -1,4 +1,4 @@
-package com.dorren.eventhub.model;
+package com.dorren.eventhub.data.model;
 
 import com.google.gson.Gson;
 

@@ -1,4 +1,4 @@
-package com.dorren.eventhub.util;
+package com.dorren.eventhub.data.util;
 
 import android.net.Uri;
 
@@ -11,11 +11,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Scanner;
 
 /**

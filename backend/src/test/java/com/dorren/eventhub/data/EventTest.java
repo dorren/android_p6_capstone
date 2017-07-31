@@ -1,7 +1,7 @@
 package com.dorren.eventhub.data;
 
-import com.dorren.eventhub.model.Event;
-import com.dorren.eventhub.util.OffsetDateTimeConverter;
+import com.dorren.eventhub.data.model.Event;
+import com.dorren.eventhub.data.model.OffsetDateTimeConverter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

@@ -1,7 +1,6 @@
 package com.dorren.eventhub.ui.event;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.content.Context;
@@ -19,10 +18,10 @@ import android.view.ViewGroup;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.EventContentProvider;
-import com.dorren.eventhub.model.Event;
+import com.dorren.eventhub.data.model.Event;
 import com.dorren.eventhub.ui.newevent.NewEventActivity;
-import com.dorren.eventhub.util.AppUtil;
-import com.dorren.eventhub.util.PreferenceUtil;
+import com.dorren.eventhub.data.util.AppUtil;
+import com.dorren.eventhub.data.util.PreferenceUtil;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 

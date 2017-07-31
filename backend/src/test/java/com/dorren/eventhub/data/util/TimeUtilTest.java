@@ -1,4 +1,4 @@
-package com.dorren.eventhub.util;
+package com.dorren.eventhub.data.util;
 import org.junit.Test;
 import org.threeten.bp.OffsetDateTime;
 

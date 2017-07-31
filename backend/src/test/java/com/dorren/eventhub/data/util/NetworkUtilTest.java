@@ -1,16 +1,11 @@
-package com.dorren.eventhub.util;
+package com.dorren.eventhub.data.util;
 
-import android.util.Log;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Iterator;
 
 import static org.junit.Assert.*;
 /**

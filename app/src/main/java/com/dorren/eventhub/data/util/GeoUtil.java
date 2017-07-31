@@ -1,4 +1,4 @@
-package com.dorren.eventhub.util;
+package com.dorren.eventhub.data.util;
 
 import android.content.Context;
 import android.location.Address;

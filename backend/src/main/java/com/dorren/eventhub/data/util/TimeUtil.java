@@ -1,6 +1,5 @@
-package com.dorren.eventhub.util;
+package com.dorren.eventhub.data.util;
 
-import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.OffsetDateTime;
 import org.threeten.bp.ZoneOffset;
 import org.threeten.bp.format.DateTimeFormatter;

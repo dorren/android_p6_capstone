@@ -1,12 +1,12 @@
 package com.dorren.eventhub.data;
 
-import com.dorren.eventhub.model.User;
+import com.dorren.eventhub.data.model.User;
 
 import org.json.JSONException;
 import org.junit.Test;
 
-
 import static org.junit.Assert.*;
+
 /**
  * Created by dorrenchen on 7/19/17.
  */

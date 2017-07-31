@@ -1,4 +1,4 @@
-package com.dorren.eventhub.util;
+package com.dorren.eventhub.data.util;
 
 /**
  * Created by dorrenchen on 7/22/17.

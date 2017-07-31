@@ -1,5 +1,5 @@
 
-package com.dorren.eventhub.util;
+package com.dorren.eventhub.data.model;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

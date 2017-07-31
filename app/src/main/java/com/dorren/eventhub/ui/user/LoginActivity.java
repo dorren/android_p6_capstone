@@ -33,17 +33,11 @@ import android.widget.TextView;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.ApiService;
-import com.dorren.eventhub.model.User;
+import com.dorren.eventhub.data.model.User;
 import com.dorren.eventhub.ui.event.MainActivity;
-import com.dorren.eventhub.util.AppUtil;
-import com.dorren.eventhub.util.NetworkUtil;
-import com.dorren.eventhub.util.PreferenceUtil;
+import com.dorren.eventhub.data.util.AppUtil;
+import com.dorren.eventhub.data.util.PreferenceUtil;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package com.dorren.eventhub.data;
 
-import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.test.runner.AndroidJUnit4;

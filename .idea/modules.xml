@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eventhubdata/eventhubdata.iml" filepath="$PROJECT_DIR$/eventhubdata/eventhubdata.iml" />
       <module fileurl="file://$PROJECT_DIR$/p6_capstone.iml" filepath="$PROJECT_DIR$/p6_capstone.iml" />
     </modules>
   </component>

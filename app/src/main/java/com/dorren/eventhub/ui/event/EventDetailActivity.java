@@ -2,7 +2,6 @@ package com.dorren.eventhub.ui.event;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -17,19 +16,11 @@ import android.widget.Toast;
 import com.dorren.eventhub.MapActivity;
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.ApiService;
-import com.dorren.eventhub.model.Event;
-import com.dorren.eventhub.model.User;
-import com.dorren.eventhub.model.UserEvent;
-import com.dorren.eventhub.util.AppUtil;
-import com.dorren.eventhub.util.NetworkUtil;
-import com.dorren.eventhub.util.PreferenceUtil;
+import com.dorren.eventhub.data.model.Event;
+import com.dorren.eventhub.data.model.User;
+import com.dorren.eventhub.data.model.UserEvent;
+import com.dorren.eventhub.data.util.PreferenceUtil;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URL;
 
 public class EventDetailActivity extends AppCompatActivity {
     private static final String TAG = "EventDetail";

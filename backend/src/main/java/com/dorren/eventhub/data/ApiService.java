@@ -3,11 +3,10 @@ package com.dorren.eventhub.data;
 import android.net.Uri;
 import android.util.Log;
 
-import com.dorren.eventhub.model.Event;
-import com.dorren.eventhub.model.User;
-import com.dorren.eventhub.model.UserEvent;
-import com.dorren.eventhub.util.AppUtil;
-import com.dorren.eventhub.util.NetworkUtil;
+import com.dorren.eventhub.data.model.Event;
+import com.dorren.eventhub.data.model.User;
+import com.dorren.eventhub.data.model.UserEvent;
+import com.dorren.eventhub.data.util.NetworkUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +21,7 @@ import java.net.URL;
 
 public class ApiService {
     private static final String TAG = "ApiService";
+    public static final String errKey = "_error";
 
     public User authenticate(String email, String password) throws ApiException {
         User user = null;
@@ -37,8 +37,8 @@ public class ApiService {
             String response = NetworkUtil.query(url, "POST", data);
             JSONObject json = new JSONObject(response);
 
-            if (json.has(AppUtil.errKey)) {
-                String errorMsg = json.getString(AppUtil.errKey);
+            if (json.has(errKey)) {
+                String errorMsg = json.getString(errKey);
                 throw new ApiException(errorMsg);
             } else {
                 user = User.fromJson(response);
@@ -79,8 +79,8 @@ public class ApiService {
             String response = NetworkUtil.query(url);
             JSONObject json = new JSONObject(response);
 
-            if (json.has(AppUtil.errKey)) {
-                String errorMsg = json.getString(AppUtil.errKey);
+            if (json.has(errKey)) {
+                String errorMsg = json.getString(errKey);
                 Log.e(TAG, errorMsg);
                 throw new ApiException(errorMsg);
             } else {
@@ -118,8 +118,8 @@ public class ApiService {
             String response = NetworkUtil.query(url, "PUT", data);
             JSONObject json = new JSONObject(response);
 
-            if (json.has(AppUtil.errKey)) {
-                String errorMsg = json.getString(AppUtil.errKey);
+            if (json.has(errKey)) {
+                String errorMsg = json.getString(errKey);
                 Log.e(TAG, errorMsg);
                 throw new ApiException(errorMsg);
             } else {
@@ -165,8 +165,8 @@ public class ApiService {
             String response = NetworkUtil.query(url);
             json = new JSONObject(response);
 
-            if (json.has(AppUtil.errKey)) {
-                String errorMsg = json.getString(AppUtil.errKey);
+            if (json.has(errKey)) {
+                String errorMsg = json.getString(errKey);
                 Log.e(TAG, errorMsg);
                 throw new ApiException(errorMsg);
             } else {
@@ -192,8 +192,8 @@ public class ApiService {
             String response = NetworkUtil.query(url, "POST", json);
             JSONObject res = new JSONObject(response);
 
-            if (res.has(AppUtil.errKey)) {
-                String errorMsg = res.getString(AppUtil.errKey);
+            if (res.has(errKey)) {
+                String errorMsg = res.getString(errKey);
                 Log.e(TAG, errorMsg);
                 throw new ApiException(errorMsg);
             } else {

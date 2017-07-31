@@ -7,24 +7,20 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.dorren.eventhub.R;
-import com.dorren.eventhub.model.Event;
+import com.dorren.eventhub.data.model.Event;
 import com.dorren.eventhub.ui.myevent.MyEventFragment;
 import com.dorren.eventhub.ui.user.LoginActivity;
 import com.dorren.eventhub.ui.user.ProfileFragment;
-import com.dorren.eventhub.util.AppUtil;
-import com.dorren.eventhub.util.PreferenceUtil;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+import com.dorren.eventhub.data.util.AppUtil;
+import com.dorren.eventhub.data.util.PreferenceUtil;
 
 public class MainActivity extends AppCompatActivity implements
         EventListFragment.EventListFragmentListener {

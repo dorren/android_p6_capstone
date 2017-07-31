@@ -1,15 +1,11 @@
 package com.dorren.eventhub.data;
 
-import android.net.Uri;
-
-import com.dorren.eventhub.model.Event;
-import com.dorren.eventhub.util.NetworkUtil;
-import com.jakewharton.threetenabp.AndroidThreeTen;
+import com.dorren.eventhub.data.model.Event;
+import com.dorren.eventhub.data.util.NetworkUtil;
 
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.threeten.bp.OffsetDateTime;
 
 
 import static org.junit.Assert.*;
