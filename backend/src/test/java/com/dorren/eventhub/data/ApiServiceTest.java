@@ -20,7 +20,7 @@ public class ApiServiceTest {
     @Before
     public void setup() {
         api = new ApiService();
-        NetworkUtil.API_BASE_URL = "http://localhost:3000";
+        NetworkUtil.setApiUrl("http://localhost:3000");
     }
 
     @Test

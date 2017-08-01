@@ -1,5 +1,6 @@
 package com.dorren.eventhub.ui;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        AppUtil.init(getApplicationContext());
 
         new AuthenticateAsyncTask(this).execute();
     }

@@ -97,7 +97,7 @@ public class SignupActivity extends AppCompatActivity {
         private User attemptSignup(String name, String email, String password)
                 throws IOException, JSONException {
 
-            Uri uri = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().
+            Uri uri = Uri.parse(NetworkUtil.getApiUrl()).buildUpon().
                     appendPath("users").build();
             URL url = new URL(uri.toString());
 

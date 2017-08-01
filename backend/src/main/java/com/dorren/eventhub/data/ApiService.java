@@ -26,7 +26,7 @@ public class ApiService {
     public User authenticate(String email, String password) throws ApiException {
         User user = null;
         try {
-            Uri uri = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().
+            Uri uri = Uri.parse(NetworkUtil.getApiUrl()).buildUpon().
                     appendPath("users").appendPath("authenticate").build();
             URL url = new URL(uri.toString());
 
@@ -65,7 +65,7 @@ public class ApiService {
                 jsonStr = "{}";
             }
             JSONObject jsonIn = new JSONObject(jsonStr);
-            Uri.Builder builder = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().appendPath("events");
+            Uri.Builder builder = Uri.parse(NetworkUtil.getApiUrl()).buildUpon().appendPath("events");
             if(jsonIn.has("organizer_id")) {
                 builder.appendQueryParameter("organizer_id", jsonIn.getString("organizer_id"));
             }
@@ -105,7 +105,7 @@ public class ApiService {
     public UserEvent bookmark(UserEvent ue) throws ApiException {
         UserEvent result = null;
         try {
-            Uri uri = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().
+            Uri uri = Uri.parse(NetworkUtil.getApiUrl()).buildUpon().
                     appendPath("events").
                     appendPath(ue.event_id).
                     appendPath(ue.user_action).  // "bookmark" or "confirm"
@@ -145,7 +145,7 @@ public class ApiService {
 
         try {
 
-            Uri.Builder builder = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().
+            Uri.Builder builder = Uri.parse(NetworkUtil.getApiUrl()).buildUpon().
                     appendPath("me").
                     appendPath("events");
 
@@ -184,7 +184,7 @@ public class ApiService {
     public Event createEvent(JSONObject json) throws ApiException {
         Event result = null;
         try {
-            Uri uri = Uri.parse(NetworkUtil.API_BASE_URL).buildUpon().
+            Uri uri = Uri.parse(NetworkUtil.getApiUrl()).buildUpon().
                     appendPath("events").
                     build();
             URL url = new URL(uri.toString());

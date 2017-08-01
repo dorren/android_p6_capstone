@@ -1,5 +1,9 @@
 package com.dorren.eventhub.util;
 
+import android.content.Context;
+
+import com.dorren.eventhub.data.util.NetworkUtil;
+
 /**
  * Created by dorrenchen on 7/22/17.
  */
@@ -15,5 +19,10 @@ public class AppUtil {
 
     // loaders
     public static final int EVENTS_CURSOR_LOADER = 1;
+
+
+    public static void init(Context context){
+        NetworkUtil.setApiUrl(context);
+    }
 
 }
