@@ -51,7 +51,7 @@ public class EventListFragment extends Fragment implements
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    private EventListFragment() {
+    public EventListFragment() {
     }
 
     /**
