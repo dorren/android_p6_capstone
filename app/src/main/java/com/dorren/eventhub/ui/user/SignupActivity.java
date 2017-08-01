@@ -11,9 +11,9 @@ import android.widget.EditText;
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.ApiService;
 import com.dorren.eventhub.data.model.User;
-import com.dorren.eventhub.data.util.AppUtil;
+import com.dorren.eventhub.util.AppUtil;
 import com.dorren.eventhub.data.util.NetworkUtil;
-import com.dorren.eventhub.data.util.PreferenceUtil;
+import com.dorren.eventhub.util.PreferenceUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;

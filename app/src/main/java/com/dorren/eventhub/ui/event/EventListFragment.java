@@ -20,8 +20,8 @@ import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.EventContentProvider;
 import com.dorren.eventhub.data.model.Event;
 import com.dorren.eventhub.ui.newevent.NewEventActivity;
-import com.dorren.eventhub.data.util.AppUtil;
-import com.dorren.eventhub.data.util.PreferenceUtil;
+import com.dorren.eventhub.util.AppUtil;
+import com.dorren.eventhub.util.PreferenceUtil;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -86,7 +86,7 @@ public class EventListFragment extends Fragment implements
         mAdView = (AdView) rootView.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().
                 addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        mAdView.loadAd(adRequest);
+        //mAdView.loadAd(adRequest);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.event_list_recycle_view);
 

@@ -19,8 +19,8 @@ import com.dorren.eventhub.data.model.Event;
 import com.dorren.eventhub.ui.myevent.MyEventFragment;
 import com.dorren.eventhub.ui.user.LoginActivity;
 import com.dorren.eventhub.ui.user.ProfileFragment;
-import com.dorren.eventhub.data.util.AppUtil;
-import com.dorren.eventhub.data.util.PreferenceUtil;
+import com.dorren.eventhub.util.AppUtil;
+import com.dorren.eventhub.util.PreferenceUtil;
 
 public class MainActivity extends AppCompatActivity implements
         EventListFragment.EventListFragmentListener {

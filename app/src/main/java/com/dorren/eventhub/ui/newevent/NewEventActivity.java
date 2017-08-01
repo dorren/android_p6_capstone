@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.ApiService;
 import com.dorren.eventhub.data.model.Event;
-import com.dorren.eventhub.data.util.PreferenceUtil;
+import com.dorren.eventhub.util.PreferenceUtil;
 import com.dorren.eventhub.data.util.TimeUtil;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;

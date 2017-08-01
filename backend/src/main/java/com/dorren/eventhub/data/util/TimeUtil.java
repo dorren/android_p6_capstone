@@ -21,6 +21,11 @@ public class TimeUtil {
         return time;
     }
 
+    public static String dateStringShort(OffsetDateTime dt){
+        String pattern = "EEE MM/dd";
+        String str = dt.format(DateTimeFormatter.ofPattern(pattern));
+        return str;
+    }
 
     public static String dateToString(OffsetDateTime dt){
         String pattern = "EEEE LLLL dd HH:mm a";

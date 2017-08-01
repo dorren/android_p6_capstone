@@ -19,7 +19,7 @@ import com.dorren.eventhub.data.ApiService;
 import com.dorren.eventhub.data.model.Event;
 import com.dorren.eventhub.data.model.User;
 import com.dorren.eventhub.data.model.UserEvent;
-import com.dorren.eventhub.data.util.PreferenceUtil;
+import com.dorren.eventhub.util.PreferenceUtil;
 import com.squareup.picasso.Picasso;
 
 public class EventDetailActivity extends AppCompatActivity {

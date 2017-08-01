@@ -14,7 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.dorren.eventhub.data.model.Event;
-import com.dorren.eventhub.data.util.GeoUtil;
+import com.dorren.eventhub.util.GeoUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
