@@ -16,9 +16,12 @@
     </string>
     <string name="transition_event_image">transition_event_image</string>
 
+    <string name="bookmark">bookmark</string>
+    <string name="confirm">confirm</string>
+
     <!-- fields saved in shared pref. -->
     <string name="prefs_name">event_hub_preferences</string>
-    <string name="current_user_json">current_user_json</string>
+    <string name="current_user_key">current_user_key</string>
 
     <string name="google_maps_key">AIzaSyAO8TwBxmR_nLl8HeZh8FmExTaVyWU-DiI</string>
     <string name="banner_ad_unit_id">ca-app-pub-4483146477964144/1337930153</string>
@@ -49,4 +52,7 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
+
+    <!--<string name="api_url">http://10.0.2.2:3000</string>-->
+    <string name="api_url">http://www.bookasap.com/eventhub</string>
 </resources>

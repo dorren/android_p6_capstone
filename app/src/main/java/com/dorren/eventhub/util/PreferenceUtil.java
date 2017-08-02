@@ -2,6 +2,7 @@ package com.dorren.eventhub.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.model.User;
@@ -11,7 +12,7 @@ import com.dorren.eventhub.data.model.User;
  */
 
 public class PreferenceUtil {
-    private static final String KLASS = PreferenceUtil.class.getSimpleName();
+    private static final String TAG = PreferenceUtil.class.getSimpleName();
 
     /**
      *
@@ -31,16 +32,17 @@ public class PreferenceUtil {
 
         SharedPreferences prefs = getPreference(context);
         SharedPreferences.Editor editor = prefs.edit();
-        String key_name = context.getString(R.string.current_user_json);
-        editor.putString(key_name, json);
+        String key = context.getString(R.string.current_user_key);
+        editor.putString(key, json);
         editor.commit();
     }
 
     public static User getCurrentUser(Context context) {
         SharedPreferences prefs = getPreference(context);
-        String key_name = context.getString(R.string.current_user_json);
+        String key_name = context.getString(R.string.current_user_key);
 
         String json = prefs.getString(key_name, null);
+        Log.d(TAG, "getCurrentUser() " + json);
         User user = null;
         if(json != null){
             user = User.fromJson(json);
@@ -50,7 +52,10 @@ public class PreferenceUtil {
     }
 
     public static void logout(Context context) {
-        saveCurrentUser(context, null);
+        SharedPreferences prefs = getPreference(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        String key = context.getString(R.string.current_user_key);
+        editor.remove(key);
     }
 
 }

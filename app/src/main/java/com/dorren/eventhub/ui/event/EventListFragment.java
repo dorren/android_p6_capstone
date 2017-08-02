@@ -83,10 +83,7 @@ public class EventListFragment extends Fragment implements
         Log.d(TAG, "onCreateView " + mEventType);
         View rootView = inflater.inflate(R.layout.fragment_event_list, container, false);
 
-        mAdView = (AdView) rootView.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().
-                addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        //mAdView.loadAd(adRequest);
+        loadAd(rootView);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.event_list_recycle_view);
 
@@ -107,6 +104,15 @@ public class EventListFragment extends Fragment implements
         return rootView;
     }
 
+    private void loadAd(View rootView){
+        mAdView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest.Builder builder = new AdRequest.Builder();
+        if(AppUtil.isEmulator()){
+            builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
+        }
+        AdRequest adRequest = builder.build();
+        mAdView.loadAd(adRequest);
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -153,6 +159,7 @@ public class EventListFragment extends Fragment implements
             } else if (mEventType == Event.TYPE_BOOKMARKED) {
                 String userId = PreferenceUtil.getCurrentUser(getActivity()).id;
                 JSONObject options = new JSONObject();
+                Log.d(TAG, "userId "+ userId);
                 options.put("user_id", userId);
                 options.put("bookmarked", true);
                 return new CursorLoader(getActivity(),

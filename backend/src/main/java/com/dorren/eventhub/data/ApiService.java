@@ -35,6 +35,7 @@ public class ApiService {
             data.put("password", password);
 
             String response = NetworkUtil.query(url, "POST", data);
+            Log.d(TAG, "authenticate()\n " + response);
             JSONObject json = new JSONObject(response);
 
             if (json.has(errKey)) {
@@ -162,6 +163,7 @@ public class ApiService {
             Uri uri = builder.build();
             URL url = new URL(uri.toString());
 
+            Log.d(TAG, url.toString());
             String response = NetworkUtil.query(url);
             json = new JSONObject(response);
 

@@ -1,11 +1,7 @@
 package com.dorren.eventhub.data.util;
 
-import android.app.Application;
-import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-
-import com.dorren.eventhub.data.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,12 +26,6 @@ public class NetworkUtil {
 
     private static  String API_BASE_URL;
 
-    public static void setApiUrl(Context context){
-        API_BASE_URL = context.getString(R.string.api_url);
-        Log.d(TAG, "setApiUrl() " + API_BASE_URL);
-    }
-
-    // used in junit test.
     public static void setApiUrl(String url){
         API_BASE_URL = url;
         Log.d(TAG, "setApiUrl() " + API_BASE_URL);

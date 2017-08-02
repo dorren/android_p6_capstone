@@ -6,24 +6,25 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.ui.event.EventDetailActivity;
+import com.dorren.eventhub.util.AppUtil;
 
 /**
  * Implementation of App Widget functionality.
- * App Widget Configuration implemented in {@link EventWidgetConfigureActivity EventWidgetConfigureActivity}
  */
 public class EventWidget extends AppWidgetProvider {
     private static final String TAG = EventWidget.class.getSimpleName();
+    private static final String ACTION_REFRESH = "com.dorren.eventhub.widget.action.REFRESH";
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-        Log.d(TAG, "updateAppWidget()");
+        Log.d(TAG, "updateAppWidget() " + appWidgetId);
 
-        CharSequence widgetText = EventWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
         // Construct the RemoteViews object
         RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.event_widget);
 
@@ -41,6 +42,14 @@ public class EventWidget extends AppWidgetProvider {
                 PendingIntent.FLAG_UPDATE_CURRENT);
         rv.setPendingIntentTemplate(R.id.appwidget_list_view, appPendingIntent);
 
+
+        // setup refresh click
+        Intent intent2 = new Intent(context, EventWidget.class);
+        intent2.setAction(ACTION_REFRESH);
+        intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{appWidgetId});
+        PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+        rv.setOnClickPendingIntent(R.id.appwidget_refresh_btn, pi);
+
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, rv);
     }
@@ -50,6 +59,19 @@ public class EventWidget extends AppWidgetProvider {
         Log.d(TAG, "onReceive()");
         super.onReceive(context, intent);
 
+        AppUtil.init(context);
+        if (ACTION_REFRESH.equals(intent.getAction())) {
+            Bundle extras = intent.getExtras();
+            if (extras != null) {
+                int[] appWidgetIds = extras.getIntArray(AppWidgetManager.EXTRA_APPWIDGET_IDS);
+                AppWidgetManager mgr = AppWidgetManager.getInstance(context);
+                mgr.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.appwidget_list_view);
+
+                if (appWidgetIds != null && appWidgetIds.length > 0) {
+                    onUpdate(context, mgr, appWidgetIds);
+                }
+            }
+        }
     }
 
     @Override
@@ -66,7 +88,6 @@ public class EventWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         // When the user deletes the widget, delete the preference associated with it.
         for (int appWidgetId : appWidgetIds) {
-            EventWidgetConfigureActivity.deleteTitlePref(context, appWidgetId);
         }
     }
 

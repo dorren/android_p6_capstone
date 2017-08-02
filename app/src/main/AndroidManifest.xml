@@ -61,18 +61,13 @@
         <receiver android:name=".widget.EventWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name=".widget.EventWidget.ACTION_REFRESH"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/event_widget_info" />
         </receiver>
-
-        <activity android:name=".widget.EventWidgetConfigureActivity">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
-        </activity>
 
         <service android:name=".widget.EventListService"
             android:permission="android.permission.BIND_REMOTEVIEWS"

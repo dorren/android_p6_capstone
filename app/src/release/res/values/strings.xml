@@ -1,0 +1,3 @@
+<resources>
+    <string name="api_url">http://www.bookasap.com/eventhub</string>
+</resources>

@@ -27,7 +27,16 @@ public class SplashActivity extends AppCompatActivity {
 
         AppUtil.init(getApplicationContext());
 
-        new AuthenticateAsyncTask(this).execute();
+        final Context ctx = this;
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        new AuthenticateAsyncTask(ctx).execute();
+                    }
+                },
+                3000
+        );
     }
 
     @Override
