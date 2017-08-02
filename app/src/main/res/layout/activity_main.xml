@@ -47,25 +47,6 @@
                 android:layout_height="wrap_content"
                 android:text="Organized"
                 style="@style/event_type_nav"/>
-
-            <RadioButton
-                android:id="@+id/event_type_planning"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Planning"
-                style="@style/event_type_nav"/>
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Custom1"
-                style="@style/event_type_nav"/>
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Custom2"
-                style="@style/event_type_nav"/>
         </RadioGroup>
     </HorizontalScrollView>
 

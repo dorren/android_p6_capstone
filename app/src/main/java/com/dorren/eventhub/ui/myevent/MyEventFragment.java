@@ -2,24 +2,32 @@ package com.dorren.eventhub.ui.myevent;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alamkanak.weekview.MonthLoader;
+import com.alamkanak.weekview.WeekView;
+import com.alamkanak.weekview.WeekViewEvent;
+import com.alamkanak.weekview.WeekViewLoader;
 import com.dorren.eventhub.R;
+import com.dorren.eventhub.data.ApiService;
+import com.dorren.eventhub.data.model.Event;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Fragment to show user's bookmarked, confirmed, and organized events.
  */
-public class MyEventFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
+public class MyEventFragment extends Fragment implements MonthLoader.MonthChangeListener{
+    private WeekView mWeekView;
+    private EventWeekLoader mLoader;
 
     public MyEventFragment() {
         // Required empty public constructor
@@ -36,27 +44,25 @@ public class MyEventFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static MyEventFragment newInstance(String param1, String param2) {
         MyEventFragment fragment = new MyEventFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        mLoader = new EventWeekLoader(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_event, container, false);
+        View rootView =  inflater.inflate(R.layout.fragment_my_event, container, false);
+        mWeekView = (WeekView)  rootView.findViewById(R.id.weekView);
+        mWeekView.setWeekViewLoader(mLoader);
+        mWeekView.setMonthChangeListener(mLoader);
+
+        return rootView;
     }
 
 
@@ -70,4 +76,54 @@ public class MyEventFragment extends Fragment {
         super.onDetach();
     }
 
+    @Override
+    public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+        return null;
+    }
+
+
+
+    public class EventWeekLoader extends AsyncTask<String, Void, Event[]>
+            implements WeekViewLoader, MonthLoader.MonthChangeListener{
+
+        private final String TAG = EventWeekLoader.class.getSimpleName();
+        private Context mContext;
+        private Event[] mEvents;
+
+        public EventWeekLoader(Context context){
+            mContext = context;
+        }
+
+        @Override
+        protected Event[] doInBackground(String... params) {
+
+            return new Event[0];
+        }
+
+        @Override
+        public double toWeekViewPeriodIndex(Calendar instance) {
+            Log.d(TAG, "toWeekViewPeriodIndex() " + instance.toString());
+            return 0;
+        }
+
+        @Override
+        public List<? extends WeekViewEvent> onLoad(int periodIndex) {
+            Log.d(TAG, "onLoad() " + periodIndex);
+            return toList(mEvents);
+        }
+
+        @Override
+        public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+            Log.d(TAG, "onMonthChange() " + newYear + ", " + newMonth);
+            this.execute("");
+            return toList(mEvents);
+        }
+
+        private List<WeekViewEvent> toList(Event[] events){
+            if(mEvents == null) {
+                return new ArrayList<>();
+            }
+            return new ArrayList<>();
+        }
+    }
 }
