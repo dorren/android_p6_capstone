@@ -28,6 +28,8 @@ Widget lists user's confirmed events.
 
 * App uses Google map to show event location.
 * App uses Google location to show device current location.
+* If address can be resolved, internal map shows event and user's location.
+  If not resolved, app opens external Google map.
 * App uses admob to show ads.
 
 **Material Design**
