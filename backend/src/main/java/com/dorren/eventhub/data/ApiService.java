@@ -76,7 +76,7 @@ public class ApiService {
             //String url_str = NetworkUtil.API_BASE_URL + "/events"; // unit test mocked Uri.parse.
             //URL url = new URL(url_str);
 
-
+            Log.d(TAG, "getEvents() url " + url);
             String response = NetworkUtil.query(url);
             JSONObject json = new JSONObject(response);
 

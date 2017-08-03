@@ -16,4 +16,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="widget_refresh_margin">8dp</dimen>
+
+    <dimen name="month_margin_top">20dp</dimen>
 </resources>

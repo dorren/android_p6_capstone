@@ -34,6 +34,10 @@ public class TimeUtil {
         return str;
     }
 
+    public static String getMonthName(OffsetDateTime dt){
+        return dt.format(DateTimeFormatter.ofPattern("MMMM"));
+    }
+
     public static ZoneOffset defaultOffset(){
         if(mOffset == null) {
             OffsetDateTime dt = OffsetDateTime.now();

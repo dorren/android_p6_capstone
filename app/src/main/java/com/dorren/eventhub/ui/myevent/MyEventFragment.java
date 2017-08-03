@@ -1,7 +1,8 @@
 package com.dorren.eventhub.ui.myevent;
 
+import android.app.ActivityOptions;
 import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,25 +10,33 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
-import com.alamkanak.weekview.MonthLoader;
-import com.alamkanak.weekview.WeekView;
-import com.alamkanak.weekview.WeekViewEvent;
-import com.alamkanak.weekview.WeekViewLoader;
 import com.dorren.eventhub.R;
+import com.dorren.eventhub.data.ApiException;
 import com.dorren.eventhub.data.ApiService;
 import com.dorren.eventhub.data.model.Event;
+import com.dorren.eventhub.data.util.TimeUtil;
+import com.dorren.eventhub.ui.event.EventDetailActivity;
+import com.dorren.eventhub.ui.event.MainActivity;
+import com.dorren.eventhub.util.PreferenceUtil;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.threeten.bp.OffsetDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
 /**
  * Fragment to show user's bookmarked, confirmed, and organized events.
  */
-public class MyEventFragment extends Fragment implements MonthLoader.MonthChangeListener{
-    private WeekView mWeekView;
-    private EventWeekLoader mLoader;
+public class MyEventFragment extends Fragment {
+    private static final String TAG = MyEventFragment.class.getSimpleName();
+    private LinearLayout mLayout;
+    private EventsLoader mLoader;
 
     public MyEventFragment() {
         // Required empty public constructor
@@ -49,26 +58,96 @@ public class MyEventFragment extends Fragment implements MonthLoader.MonthChange
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate() ");
         super.onCreate(savedInstanceState);
-        mLoader = new EventWeekLoader(getActivity());
+        mLoader = new EventsLoader(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_my_event, container, false);
-        mWeekView = (WeekView)  rootView.findViewById(R.id.weekView);
-        mWeekView.setWeekViewLoader(mLoader);
-        mWeekView.setMonthChangeListener(mLoader);
+        Log.d(TAG, "onCreateView() ");
 
+        View rootView =  inflater.inflate(R.layout.fragment_my_event, container, false);
+        mLayout = (LinearLayout) rootView.findViewById(R.id.my_events_layout);
+
+
+        String userId = PreferenceUtil.getCurrentUser(getActivity()).id;
+        mLoader.execute(userId);
         return rootView;
     }
 
+    public void renderEvents(Event[] events){
+        OffsetDateTime now = OffsetDateTime.now();
+        int latest_year = now.getYear();
+        int latest_month = -1;
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        for(final Event event : events){
+            OffsetDateTime dt = event.time_from;
+            int year = dt.getYear();
+            int month = dt.getMonthValue();
+
+            // render year header
+            if (year != latest_year){
+                View monthHeader = inflater.inflate(R.layout.fragment_my_event_year, mLayout, false);
+                TextView txtTV = (TextView)monthHeader.findViewById(R.id.year_text);
+                String txt = dt.format(DateTimeFormatter.ofPattern("YYYY"));
+                txtTV.setText(txt);
+                mLayout.addView(monthHeader);
+
+                latest_year = year;
+            }
+
+            // render month header
+            if (!(month == latest_month)){
+                View monthHeader = inflater.inflate(R.layout.fragment_my_event_month_header, mLayout, false);
+                TextView monthTV = (TextView)monthHeader.findViewById(R.id.month_text);
+                String txt = TimeUtil.getMonthName(dt);
+                monthTV.setText(txt);
+                mLayout.addView(monthHeader);
+
+                latest_month = month;
+            }
+
+            // add an event
+            View eventView = inflater.inflate(R.layout.fragment_event, mLayout, false);
+            ImageView imgView = (ImageView)eventView.findViewById(R.id.event_image);
+            TextView dateView = (TextView)eventView.findViewById(R.id.event_date);
+            TextView titleView = (TextView)eventView.findViewById(R.id.event_title);
+            Picasso.with(getActivity()).load(event.image_url).into(imgView);
+            dateView.setText(event.dateStringShort(event.time_from));
+            titleView.setText(event.title);
+
+            eventView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openDetailActivity(v, event);
+                }
+            });
+            mLayout.addView(eventView);
+        }
+    }
+
+    private void openDetailActivity(View view, Event event){
+        ImageView img = (ImageView)view.findViewById(R.id.event_image);
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+                img, img.getTransitionName()
+        ).toBundle();
+
+        Intent intent = new Intent(getActivity(), EventDetailActivity.class);
+        String json = event.toString();
+        intent.putExtra(Intent.EXTRA_TEXT, json);
+
+        getActivity().startActivity(intent, bundle);
+    }
 
     @Override
     public void onAttach(Context context) {
+        Log.d(TAG, "onAttach() ");
         super.onAttach(context);
+
     }
 
     @Override
@@ -76,54 +155,46 @@ public class MyEventFragment extends Fragment implements MonthLoader.MonthChange
         super.onDetach();
     }
 
-    @Override
-    public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
-        return null;
-    }
 
 
 
-    public class EventWeekLoader extends AsyncTask<String, Void, Event[]>
-            implements WeekViewLoader, MonthLoader.MonthChangeListener{
 
-        private final String TAG = EventWeekLoader.class.getSimpleName();
-        private Context mContext;
+    public class EventsLoader extends AsyncTask<String, Void, Event[]> {
+        private final String TAG = EventsLoader.class.getSimpleName();
+        private ApiService api;
+        private MyEventFragment mContext;
+        private String userId;
         private Event[] mEvents;
 
-        public EventWeekLoader(Context context){
+        public EventsLoader(MyEventFragment context){
             mContext = context;
+            api = new ApiService();
         }
 
         @Override
         protected Event[] doInBackground(String... params) {
+            String userId = params[0];
 
-            return new Event[0];
-        }
+            JSONObject options = new JSONObject();
+            try {
+                options.put("user_id", userId);
+                options.put("confirmed", true);
 
-        @Override
-        public double toWeekViewPeriodIndex(Calendar instance) {
-            Log.d(TAG, "toWeekViewPeriodIndex() " + instance.toString());
-            return 0;
-        }
-
-        @Override
-        public List<? extends WeekViewEvent> onLoad(int periodIndex) {
-            Log.d(TAG, "onLoad() " + periodIndex);
-            return toList(mEvents);
-        }
-
-        @Override
-        public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
-            Log.d(TAG, "onMonthChange() " + newYear + ", " + newMonth);
-            this.execute("");
-            return toList(mEvents);
-        }
-
-        private List<WeekViewEvent> toList(Event[] events){
-            if(mEvents == null) {
-                return new ArrayList<>();
+                mEvents = api.getMyEvents(options.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }catch (ApiException e) {
+                e.printStackTrace();
             }
-            return new ArrayList<>();
+
+            return mEvents;
         }
+
+        @Override
+        protected void onPostExecute(Event[] events) {
+            Log.d(TAG, "onPostExecute() " + events.length);
+            mContext.renderEvents(events);
+        }
+
     }
 }

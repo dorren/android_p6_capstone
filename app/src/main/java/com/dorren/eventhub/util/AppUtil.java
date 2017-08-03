@@ -5,6 +5,7 @@ import android.os.Build;
 
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.util.NetworkUtil;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 
 /**
  * Created by dorrenchen on 7/22/17.
@@ -26,6 +27,8 @@ public class AppUtil {
     public static void init(Context context){
         String url = context.getString(R.string.api_url);
         NetworkUtil.setApiUrl(url);
+
+        AndroidThreeTen.init(context);
     }
 
     public static boolean isEmulator() {

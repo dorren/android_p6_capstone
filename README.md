@@ -1,6 +1,11 @@
 # Android Capstone Project
 
-<img src="doc/images/main_page.png" alt="main page" width="300px"/>
+<img src="doc/images/main_page.png" alt="main page" width="275px" style="float:left; margin:5px;"/>
+
+<img src="doc/images/schedule.png" alt="schedule page" width="275px" style="float:left; margin:5px;"/>
+
+<img src="doc/images/detail.png" alt="detail page" width="275px" style="float:left; margin:5px;"/>
+<p style="clear:both;"/>
 
 App helps user to manage all his social events. User can
 

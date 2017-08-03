@@ -58,12 +58,15 @@ public class MainActivity extends AppCompatActivity implements
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.action_home:
+                            mEventTypeNav.setVisibility(View.VISIBLE);
                             replaceFragment(mEventListFragment);
                             break;
                         case R.id.action_schedule:
+                            mEventTypeNav.setVisibility(View.GONE);
                             replaceFragment(mMyEventFragment);
                             break;
                         case R.id.action_me:
+                            mEventTypeNav.setVisibility(View.GONE);
                             replaceFragment(mProfileFragment);
                             break;
                     }
