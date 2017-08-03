@@ -27,6 +27,13 @@ public class SplashActivity extends AppCompatActivity {
 
         AppUtil.init(getApplicationContext());
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         final Context ctx = this;
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
@@ -35,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
                         new AuthenticateAsyncTask(ctx).execute();
                     }
                 },
-                3000
+                2500
         );
     }
 

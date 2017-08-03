@@ -14,6 +14,7 @@ import android.widget.RemoteViewsService;
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.EventContentProvider;
 import com.dorren.eventhub.data.model.Event;
+import com.dorren.eventhub.data.model.User;
 import com.dorren.eventhub.data.util.TimeUtil;
 import com.dorren.eventhub.util.PreferenceUtil;
 import com.squareup.picasso.Picasso;
@@ -52,13 +53,16 @@ public class EventListFactory implements RemoteViewsService.RemoteViewsFactory {
         Log.d(TAG, "onDataSetChanged()");
 
         try {
-            String userId = PreferenceUtil.getCurrentUser(mContext).id;
-            JSONObject options = new JSONObject();
-            options.put("user_id", userId);
-            options.put("confirmed", true);
-            mCursor = mContext.getContentResolver().query(
-                    EventContentProvider.MY_EVENT_URI,
-                    null, options.toString(), null, null);
+            User user = PreferenceUtil.getCurrentUser(mContext);
+            if(user != null) {
+                String userId = user.id;
+                JSONObject options = new JSONObject();
+                options.put("user_id", userId);
+                options.put("confirmed", true);
+                mCursor = mContext.getContentResolver().query(
+                        EventContentProvider.MY_EVENT_URI,
+                        null, options.toString(), null, null);
+            }
         }catch (JSONException ex){
             ex.printStackTrace();
         }
@@ -71,8 +75,12 @@ public class EventListFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        Log.d(TAG, "getCount() " + mCursor.getCount());
-        return mCursor.getCount();
+        if(mCursor!= null) {
+            Log.d(TAG, "getCount() " + mCursor.getCount());
+            return mCursor.getCount();
+        }else{
+            return 0;
+        }
     }
 
     @Override
