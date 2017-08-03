@@ -24,6 +24,11 @@ Widget lists user's confirmed events.
 
 [rubic](https://review.udacity.com/#!/rubrics/65/view)
 
+**Core Platform Development**
+
+* app validates signup form and new event form
+* app provides a widget
+
 **Google Play Services**
 
 * App uses Google map to show event location.
