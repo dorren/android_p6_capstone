@@ -56,7 +56,7 @@ public class ApiService {
     /**
      *
      * @return get events object from API.
-     * @throws ApiException
+     * @throws ApiException Api related error
      */
     public Event[] getEvents(String jsonStr) throws ApiException {
         Event[] events = null;
@@ -100,8 +100,8 @@ public class ApiService {
      * to bookmark and confirm event.
      *
      * @param ue new UserEvent holding the incoming attributes
-     * @return
-     * @throws ApiException
+     * @return UserEvent object
+     * @throws ApiException api error
      */
     public UserEvent bookmark(UserEvent ue) throws ApiException {
         UserEvent result = null;
@@ -139,7 +139,7 @@ public class ApiService {
      *
      * @return get user bookmarked or confirmed events
      *
-     * @throws ApiException
+     * @throws ApiException api error
      */
     public Event[] getMyEvents(String options) throws ApiException {
         Event[] events = null;

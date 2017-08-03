@@ -136,7 +136,9 @@ public class EventDetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(UserEvent userEvent) {
-            Toast.makeText(mContext, "Event "+ userEvent.user_action + "ed", Toast.LENGTH_LONG).show();
+            String str = String.format(getString(R.string.event_actioned), userEvent.user_action);
+
+            Toast.makeText(mContext, str, Toast.LENGTH_LONG).show();
         }
     }
 }

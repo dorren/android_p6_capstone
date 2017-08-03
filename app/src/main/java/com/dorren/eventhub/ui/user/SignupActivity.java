@@ -82,7 +82,7 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         if(!AppUtil.isEmpty(mErrorTxt)){
-            mErrorMsg.setText(mErrorTxt + "\n");
+            mErrorMsg.setText(mErrorTxt);
             mErrorMsg.setVisibility(View.VISIBLE);
         }
         if (valid) {

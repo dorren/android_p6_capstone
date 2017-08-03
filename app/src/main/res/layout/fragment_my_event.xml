@@ -5,11 +5,20 @@
     android:layout_height="match_parent"
     tools:context="com.dorren.eventhub.ui.myevent.MyEventFragment">
 
+
+
     <LinearLayout
         android:id="@+id/my_events_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <TextView
+            android:id="@+id/no_events_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/no_events_found"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:visibility="gone" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

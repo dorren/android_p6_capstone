@@ -36,18 +36,19 @@
     <string name="email">Email</string>
 
     <!-- my events fragment -->
-    <string name="bookmarked">bookmarked</string>
-    <string name="confirmed">confirmed</string>
-    <string name="organized">organized</string>
+    <string name="all">All</string>
+    <string name="bookmarked">Bookmarked</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="organized">Organized</string>
 
     <string name="desc_add_event">Add new event</string>
 
-    <string name="title">title</string>
-    <string name="detail">detail</string>
-    <string name="time_from">from</string>
-    <string name="time_to">to</string>
-    <string name="location">location</string>
-    <string name="image_url">image url</string>
+    <string name="title">Title</string>
+    <string name="detail">Detail</string>
+    <string name="time_from">Time from</string>
+    <string name="time_to">Time to</string>
+    <string name="location">Location</string>
+    <string name="image_url">Image URL</string>
     <string name="post">Post</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Configure</string>
@@ -55,4 +56,25 @@
 
     <!--<string name="api_url">http://10.0.2.2:3000</string>-->
     <string name="api_url">http://www.bookasap.com/eventhub</string>
+
+    <string name="desc_event_image">event image</string>
+    <string name="desc_event_start_time">event start time</string>
+    <string name="desc_event_end_time">event end time</string>
+    <string name="desc_refresh">refresh</string>
+    <string name="desc_event_main_image">event main image</string>
+    <string name="desc_thumbnail_image">event thumbnail image</string>
+    <string name="or">or</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout">Logout</string>
+
+    <string name="event_actioned">Event %1$sed.</string>
+    <string name="event_saved">Event saved.</string>
+    <string name="list_of_all_events">list of all events</string>
+    <string name="value_is_required">%1$s is required.</string>
+    <string name="next_line">\n</string>
+    <string name="design_test_error_message">error message for invalid user input.</string>
+    <string name="no_events_found">No events found, add some first.</string>
 </resources>

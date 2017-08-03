@@ -19,8 +19,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:padding="30dp"
-            android:text="Sign Up"
+            android:padding="@dimen/signup_header_padding"
+            android:text="@string/sign_up"
             />
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:visibility="invisible"
-            tools:text="error message for invalid user input."
+            tools:text="@string/design_test_error_message"
             />
 
         <LinearLayout
@@ -40,38 +40,38 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name"/>
+                android:text="@string/name"/>
             <EditText
                 android:id="@+id/signup_name"
-                android:layout_width="200dp"
+                android:layout_width="@dimen/input_field_width"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email"/>
+                android:text="@string/email"/>
             <EditText
                 android:id="@+id/signup_email"
-                android:layout_width="200dp"
+                android:layout_width="@dimen/input_field_width"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Password"/>
+                android:text="@string/password"/>
             <EditText
                 android:id="@+id/signup_password"
-                android:layout_width="200dp"
+                android:layout_width="@dimen/input_field_width"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Confirm Password"/>
+                android:text="@string/confirm_password"/>
             <EditText
                 android:id="@+id/signup_confirm_password"
-                android:layout_width="200dp"
+                android:layout_width="@dimen/input_field_width"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"/>
 
@@ -85,13 +85,13 @@
                 <android.support.v7.widget.AppCompatButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sign Up"
+                    android:text="@string/sign_up"
                     android:onClick="signUp"/>
 
                 <android.support.v7.widget.AppCompatButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:onClick="cancel"/>
             </LinearLayout>
         </LinearLayout>

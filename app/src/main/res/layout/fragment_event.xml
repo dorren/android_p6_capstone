@@ -7,10 +7,11 @@
 
     <ImageView
         android:id="@+id/event_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/event_thumb_size"
+        android:layout_height="@dimen/event_thumb_size"
         android:scaleType="centerCrop"
         android:layout_gravity="center_vertical"
+        android:contentDescription="@string/desc_thumbnail_image"
         android:transitionName="@string/transition_event_image"/>
     <TextView
         android:id="@+id/event_date"

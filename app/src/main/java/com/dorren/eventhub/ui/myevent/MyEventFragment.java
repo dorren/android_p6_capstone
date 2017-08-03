@@ -37,6 +37,7 @@ public class MyEventFragment extends Fragment {
     private static final String TAG = MyEventFragment.class.getSimpleName();
     private LinearLayout mLayout;
     private EventsLoader mLoader;
+    private TextView mNoEventsView;
 
     public MyEventFragment() {
         // Required empty public constructor
@@ -70,7 +71,7 @@ public class MyEventFragment extends Fragment {
 
         View rootView =  inflater.inflate(R.layout.fragment_my_event, container, false);
         mLayout = (LinearLayout) rootView.findViewById(R.id.my_events_layout);
-
+        mNoEventsView = (TextView) rootView.findViewById(R.id.no_events_view);
 
         String userId = PreferenceUtil.getCurrentUser(getActivity()).id;
         mLoader.execute(userId);
@@ -78,6 +79,11 @@ public class MyEventFragment extends Fragment {
     }
 
     public void renderEvents(Event[] events){
+        if(events == null){
+            mNoEventsView.setVisibility(View.VISIBLE);
+            return;
+        }
+
         OffsetDateTime now = OffsetDateTime.now();
         int latest_year = now.getYear();
         int latest_month = -1;
@@ -192,7 +198,6 @@ public class MyEventFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Event[] events) {
-            Log.d(TAG, "onPostExecute() " + events.length);
             mContext.renderEvents(events);
         }
 

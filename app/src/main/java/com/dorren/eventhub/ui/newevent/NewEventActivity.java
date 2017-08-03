@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class NewEventActivity extends AppCompatActivity implements
     private OffsetDateTime mTimeFrom, mTimeTo;
     private String mErrorTxt = "";
     private TextView mErrorView;
+    private ImageButton mTimeFromBtn, mTimeToBtn;
 
 
     @Override
@@ -52,9 +54,11 @@ public class NewEventActivity extends AppCompatActivity implements
         mTitle = (TextView) findViewById(R.id.title);
         mDetail = (TextView) findViewById(R.id.detail);
         mLocation = (TextView) findViewById(R.id.location);
-        //mTimeFromBtn = (Button) findViewById(R.id.time_from_btn);
+        mTimeFromBtn = (ImageButton) findViewById(R.id.time_from_btn);
+        mTimeToBtn = (ImageButton) findViewById(R.id.time_to_btn);
         mTimeFromTxt = (TextView) findViewById(R.id.time_from);
         mmTimeToTxt = (TextView) findViewById(R.id.time_to);
+
     }
 
     @Override
@@ -138,32 +142,32 @@ public class NewEventActivity extends AppCompatActivity implements
 
         if(AppUtil.isEmpty(title)){
             valid = false;
-            mErrorTxt += "Title is required.\n";
-            mTitle.requestFocus();
+            String str = String.format(getString(R.string.value_is_required), getString(R.string.title));
+            renderError(mTitle, str);
         }
 
         if(AppUtil.isEmpty(detail)){
             valid = false;
-            mErrorTxt += "Detail is required.\n";
-            mDetail.requestFocus();
+            String str = String.format(getString(R.string.value_is_required), getString(R.string.detail));
+            renderError(mDetail, str);
         }
 
         if(mTimeFrom == null){
             valid = false;
-            mErrorTxt += "Time from is required.\n";
-            mLocation.requestFocus();
+            String str = String.format(getString(R.string.value_is_required), getString(R.string.time_from));
+            renderError(mTimeFromBtn, str);
         }
 
         if(mTimeTo == null){
             valid = false;
-            mErrorTxt += "Time to is required.\n";
-            mLocation.requestFocus();
+            String str = String.format(getString(R.string.value_is_required), getString(R.string.time_to));
+            renderError(mTimeToBtn, str);
         }
 
         if(AppUtil.isEmpty(location)){
             valid = false;
-            mErrorTxt += "location is required.\n";
-            mLocation.requestFocus();
+            String str = String.format(getString(R.string.value_is_required), getString(R.string.location));
+            renderError(mLocation, str);
         }
 
         if(valid) {
@@ -182,10 +186,16 @@ public class NewEventActivity extends AppCompatActivity implements
 
             CreateEventTask task = new CreateEventTask(this);
             task.execute(json);
-        }else{
-            mErrorView.setText(mErrorTxt);
-            mErrorView.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void renderError(View view, String errorTxt){
+        mErrorTxt += errorTxt;
+        mErrorTxt += getString(R.string.next_line);
+        view.requestFocus();
+
+        mErrorView.setText(mErrorTxt);
+        mErrorView.setVisibility(View.VISIBLE);
     }
 
     public void cancel(View view) {
@@ -222,7 +232,7 @@ public class NewEventActivity extends AppCompatActivity implements
         @Override
         protected void onPostExecute(Event event) {
             if(event != null) {
-                Toast.makeText(mContext, "Event saved", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, getString(R.string.event_saved), Toast.LENGTH_LONG).show();
 
                 new java.util.Timer().schedule(
                         new java.util.TimerTask() {

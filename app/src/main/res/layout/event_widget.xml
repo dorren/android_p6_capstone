@@ -8,7 +8,8 @@
     <ListView
         android:id="@+id/appwidget_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:contentDescription="@string/list_of_all_events"/>
 
     <ImageView
         android:id="@+id/appwidget_refresh_btn"
@@ -16,7 +17,8 @@
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_popup_sync"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:tint="@android:color/darker_gray"
+        android:contentDescription="@string/desc_refresh"
         android:layout_margin="@dimen/widget_refresh_margin"/>
 </RelativeLayout>

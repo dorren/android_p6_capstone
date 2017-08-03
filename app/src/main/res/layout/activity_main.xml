@@ -23,7 +23,7 @@
                 android:id="@+id/event_type_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="All"
+                android:text="@string/all"
                 style="@style/event_type_nav"
                 android:padding="@dimen/activity_horizontal_margin"/>
 
@@ -31,21 +31,21 @@
                 android:id="@+id/event_type_bookmarked"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bookmarked"
+                android:text="@string/bookmarked"
                 style="@style/event_type_nav"/>
 
             <RadioButton
                 android:id="@+id/event_type_confirmed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Confirmed"
+                android:text="@string/confirmed"
                 style="@style/event_type_nav"/>
 
             <RadioButton
                 android:id="@+id/event_type_organized"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Organized"
+                android:text="@string/organized"
                 style="@style/event_type_nav"/>
         </RadioGroup>
     </HorizontalScrollView>
