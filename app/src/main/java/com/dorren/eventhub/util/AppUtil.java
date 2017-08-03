@@ -23,6 +23,8 @@ public class AppUtil {
     // loaders
     public static final int EVENTS_CURSOR_LOADER = 1;
 
+    private static final String EMPTY = "";
+
 
     public static void init(Context context){
         String url = context.getString(R.string.api_url);
@@ -40,5 +42,9 @@ public class AppUtil {
                 || Build.MANUFACTURER.contains("Genymotion")
                 || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
                 || "google_sdk".equals(Build.PRODUCT);
+    }
+
+    public static boolean isEmpty(String s){
+        return (s == null || s.equals(EMPTY));
     }
 }
