@@ -1,6 +1,7 @@
 package com.dorren.eventhub.ui.newevent;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,9 @@ import android.widget.Toast;
 import com.dorren.eventhub.R;
 import com.dorren.eventhub.data.ApiService;
 import com.dorren.eventhub.data.model.Event;
+import com.dorren.eventhub.ui.SplashActivity;
+import com.dorren.eventhub.ui.event.MainActivity;
+import com.dorren.eventhub.util.AppUtil;
 import com.dorren.eventhub.util.PreferenceUtil;
 import com.dorren.eventhub.data.util.TimeUtil;
 import com.jakewharton.threetenabp.AndroidThreeTen;
@@ -33,6 +37,9 @@ public class NewEventActivity extends AppCompatActivity implements
     private TextView mTitle, mDetail, mLocation, mTimeFromTxt, mmTimeToTxt;
     private View mTimeSrc; // either time_from_btn or time_to_btn
     private OffsetDateTime mTimeFrom, mTimeTo;
+    private String mErrorTxt = "";
+    private TextView mErrorView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,7 @@ public class NewEventActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_new_event);
         AndroidThreeTen.init(this); // fetch default time zone
 
+        mErrorView = (TextView) findViewById(R.id.error_msg);
         mTitle = (TextView) findViewById(R.id.title);
         mDetail = (TextView) findViewById(R.id.detail);
         mLocation = (TextView) findViewById(R.id.location);
@@ -115,31 +123,69 @@ public class NewEventActivity extends AppCompatActivity implements
     }
 
     public void postEvent(View view){
+        boolean valid = true;
+        mErrorTxt = "";
+
         String title = mTitle.getText().toString();
         String detail = mDetail.getText().toString();
         String location = mLocation.getText().toString();
-        String timeFrom = mTimeFrom.toString();
-        String timeTo = mTimeTo.toString();
+        String timeFrom = mTimeFrom == null ? null : mTimeFrom.toString();
+        String timeTo = mTimeTo == null ? null : mTimeTo.toString();
         String organizer_id = PreferenceUtil.getCurrentUser(this).id;
 
-        // TODO hardcode for now, implement upload later.
+        // TODO hardcode for now, implement upload image later.
         String imageUrl = "https://s3.amazonaws.com/eventhubapp/events.png";
 
-        JSONObject json = new JSONObject();
-        try {
-            json.put(Event.COL_TITLE, title);
-            json.put(Event.COL_DETAIL, detail);
-            json.put(Event.COL_TIME_FROM, timeFrom);
-            json.put(Event.COL_TIME_TO, timeTo);
-            json.put(Event.COL_IMAGE_URL, imageUrl);
-            json.put(Event.COL_LOCATION, location);
-            json.put(Event.COL_ORGANIZER_ID, organizer_id);
-        }catch(JSONException ex){
-            ex.printStackTrace();
+        if(AppUtil.isEmpty(title)){
+            valid = false;
+            mErrorTxt += "Title is required.\n";
+            mTitle.requestFocus();
         }
 
-        CreateEventTask task = new CreateEventTask(this);
-        task.execute(json);
+        if(AppUtil.isEmpty(detail)){
+            valid = false;
+            mErrorTxt += "Detail is required.\n";
+            mDetail.requestFocus();
+        }
+
+        if(mTimeFrom == null){
+            valid = false;
+            mErrorTxt += "Time from is required.\n";
+            mLocation.requestFocus();
+        }
+
+        if(mTimeTo == null){
+            valid = false;
+            mErrorTxt += "Time to is required.\n";
+            mLocation.requestFocus();
+        }
+
+        if(AppUtil.isEmpty(location)){
+            valid = false;
+            mErrorTxt += "location is required.\n";
+            mLocation.requestFocus();
+        }
+
+        if(valid) {
+            JSONObject json = new JSONObject();
+            try {
+                json.put(Event.COL_TITLE, title);
+                json.put(Event.COL_DETAIL, detail);
+                json.put(Event.COL_TIME_FROM, timeFrom);
+                json.put(Event.COL_TIME_TO, timeTo);
+                json.put(Event.COL_IMAGE_URL, imageUrl);
+                json.put(Event.COL_LOCATION, location);
+                json.put(Event.COL_ORGANIZER_ID, organizer_id);
+            }catch(JSONException ex){
+                ex.printStackTrace();
+            }
+
+            CreateEventTask task = new CreateEventTask(this);
+            task.execute(json);
+        }else{
+            mErrorView.setText(mErrorTxt);
+            mErrorView.setVisibility(View.VISIBLE);
+        }
     }
 
     public void cancel(View view) {
@@ -175,7 +221,21 @@ public class NewEventActivity extends AppCompatActivity implements
 
         @Override
         protected void onPostExecute(Event event) {
-            Toast.makeText(mContext, "Event saved", Toast.LENGTH_LONG).show();
+            if(event != null) {
+                Toast.makeText(mContext, "Event saved", Toast.LENGTH_LONG).show();
+
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(mContext, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        },
+                        Toast.LENGTH_LONG
+                );
+            }
         }
     }
 }

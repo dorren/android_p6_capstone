@@ -48,6 +48,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void signUp(View view) {
+        boolean valid = true;
         mErrorTxt = "";
 
         String name = mName.getText().toString();
@@ -55,8 +56,6 @@ public class SignupActivity extends AppCompatActivity {
         String passwd = mPassword.getText().toString();
         String passwd_confirm = mConfirmPasswd.getText().toString();
 
-        boolean valid = true;
-        Log.d(TAG, "name: " + name);
 
         if(AppUtil.isEmpty(name)){
             valid = false;

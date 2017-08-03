@@ -13,6 +13,16 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/page_end_margin">
 
+        <TextView
+            android:id="@+id/error_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:visibility="invisible"
+            tools:text="error message for invalid user input."
+            />
+
         <EditText
             android:id="@+id/title"
             android:layout_width="match_parent"
